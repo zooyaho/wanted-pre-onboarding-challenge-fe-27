@@ -1,5 +1,6 @@
 import "./App.css";
-import { BrowserRouter as Router, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import AuthPage from "./pages/AuthPage";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
         {/* <Route path="/:id/edit" element={<TodoEditPage />} /> */}
 
         {/* 로그인/회원가입 페이지 */}
-        {/* <Route path="/auth" element={<AuthPage />} /> */}
+        <Route path="/auth" element={<AuthPage />} />
 
         {/* Todo 작성 페이지 */}
         {/* <Route path="/create" element={<CreateTodoPage />} /> */}
