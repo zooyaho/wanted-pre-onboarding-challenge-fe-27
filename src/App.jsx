@@ -1,24 +1,26 @@
 import "./App.css";
-import Button from "./components/common/Button";
-import Input from "./components/common/Input";
-import Label from "./components/common/Label";
-import Textarea from "./components/common/Textarea";
+import { BrowserRouter as Router, Routes } from "react-router-dom";
 
 function App() {
   return (
-    <>
-      <h1>home</h1>
-      <Label text="ID" />
-      <Input />
-      <Label text="Content" />
-      <Textarea />
-      <Button
-        text="로그아웃"
-        onClick={() => {
-          console.log("click!!");
-        }}
-      />
-    </>
+    <Router>
+      <Routes>
+        {/* 루트 - Todo 목록 페이지 */}
+        {/* <Route path="/" element={<TodoListPage />} /> */}
+
+        {/* Todo 상세 페이지 */}
+        {/* <Route path="/:id" element={<TodoDetailPage />} /> */}
+
+        {/* Todo 수정 페이지 */}
+        {/* <Route path="/:id/edit" element={<TodoEditPage />} /> */}
+
+        {/* 로그인/회원가입 페이지 */}
+        {/* <Route path="/auth" element={<AuthPage />} /> */}
+
+        {/* Todo 작성 페이지 */}
+        {/* <Route path="/create" element={<CreateTodoPage />} /> */}
+      </Routes>
+    </Router>
   );
 }
 
