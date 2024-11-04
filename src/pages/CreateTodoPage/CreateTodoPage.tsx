@@ -1,30 +1,34 @@
+import { postCreateTodo } from "@/api/todoApi";
 import RootLayout from "@/components/layout/RootLayout";
-import styles from "./CreateTodoPage.module.css";
-import Button from "@/components/common/Button";
-import Label from "@/components/common/Label";
-import Input from "@/components/common/Input";
-import Textarea from "@/components/common/Textarea";
+import TodoForm from "@/components/todo/TodoForm";
+import { useNavigate } from "react-router-dom";
 
+/** todo 작성 페이지 */
 export default function CreateTodoPage() {
+  const navigate = useNavigate();
+
+  const onCreateSubmit = async (title: string, content: string) => {
+    try {
+      await postCreateTodo(title, content);
+      navigate("/"); // todo list 페이지 이동
+    } catch (error) {
+      alert("todo 생성 실패. 다시 시도해주세요.");
+    }
+  };
+  const onCancelCreate = () => {
+    navigate("/"); // todo list 페이지 이동
+  };
+
   return (
     <RootLayout>
-      <form className={styles.form}>
-        <header className={styles.header}>
-          <Button text="취소" styleType="secondary" style={{ width: "80px" }} />
-          <Button text="저장" style={{ width: "80px" }} />
-        </header>
-
-        <div className={styles["field-container"]}>
-          <div className={styles["field-wrapper"]}>
-            <Label text="Title" isRequired />
-            <Input />
-          </div>
-          <div className={styles["field-wrapper"]}>
-            <Label text="Content" isRequired />
-            <Textarea />
-          </div>
-        </div>
-      </form>
+      <TodoForm
+        onSubmit={onCreateSubmit}
+        mainButton={{ text: "저장" }}
+        subButton={{
+          text: "취소",
+          onClick: onCancelCreate,
+        }}
+      />
     </RootLayout>
   );
 }
