@@ -4,7 +4,15 @@ import Label from "@/components/common/Label";
 import styles from "./AuthForm.module.css";
 import { useState } from "react";
 
-export default function AuthForm() {
+interface AuthFormPropsType {
+  onLoginSubmit: (id: string, pw: string) => void;
+  submitBtnText: string;
+}
+
+export default function AuthForm({
+  onLoginSubmit,
+  submitBtnText,
+}: AuthFormPropsType) {
   const [idValue, setIdValue] = useState("");
   const [idIsValid, setIdIsValid] = useState(false);
 
@@ -45,8 +53,16 @@ export default function AuthForm() {
     }
   };
 
+  /**
+   * submit 이벤트 호출
+   */
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    onLoginSubmit(idValue, pwValue);
+  };
+
   return (
-    <form className={styles.form}>
+    <form className={styles.form} onSubmit={onSubmit}>
       <div className={styles["input-wrapper"]}>
         <Label text="ID" isRequired />
         <Input
@@ -72,7 +88,7 @@ export default function AuthForm() {
         />
       </div>
       <Button
-        text="로그인 또는 회원가입"
+        text={submitBtnText}
         type="submit"
         disabled={!(idIsValid && pwIsValid)}
       />
