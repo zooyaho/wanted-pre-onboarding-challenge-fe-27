@@ -32,6 +32,7 @@ export default function Header() {
         <h1 className={styles.logo}>TODO</h1>
         <Button
           text="로그아웃"
+          styleType="secondary"
           style={{ width: "fit-content", marginRight: "20px" }}
           onClick={onLogoutBtnClick}
         />
