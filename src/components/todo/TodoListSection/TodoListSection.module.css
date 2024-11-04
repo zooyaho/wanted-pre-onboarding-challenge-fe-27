@@ -1,6 +1,6 @@
 .section {
-  width: 90vw;
-  margin: 50px auto;
+  flex: 1;
+  margin: 50px 0px 50px 50px;
   display: flex;
   flex-direction: column;
   gap: 50px;
