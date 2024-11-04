@@ -3,6 +3,7 @@ import styles from "./LoginPage.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { postLogin } from "@/api/authApi";
 import { useEffect } from "react";
+import { AxiosError } from "axios";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -13,14 +14,19 @@ export default function LoginPage() {
    * > 성공 시 localstorage에 token 저장 후 루트 경로로 이동
    * > 실패 시 alert 활성화
    */
-  const onLoginSubmit = async (id: string, pw: string) => {
+  const onLoginSubmit = async (email: string, pw: string) => {
     try {
-      const result = await postLogin(id, pw);
+      const result = await postLogin(email, pw);
       localStorage.setItem("token", result.token);
       alert(result.message);
       navigate("/");
-    } catch (e) {
-      alert("로그인 실패. 다시 시도해주세요.");
+    } catch (error) {
+      console.error(error);
+      if ((error as AxiosError).response?.status === 400) {
+        alert("로그인 실패. 이메일과 비밀번호를 다시 확인해주세요.");
+      } else {
+        alert("로그인 실패. 다시 시도해주세요.");
+      }
     }
   };
 

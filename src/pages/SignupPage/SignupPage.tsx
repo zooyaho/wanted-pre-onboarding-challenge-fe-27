@@ -12,9 +12,9 @@ export default function SingupPage() {
    * > 성공 시 로그인 페이지로 이동
    * > 실패 시 alert 활성화
    */
-  const onSignupSubmit = async (id: string, pw: string) => {
+  const onSignupSubmit = async (email: string, pw: string) => {
     try {
-      const result = await postSignUp(id, pw);
+      const result = await postSignUp(email, pw);
       alert(result.message);
       navigate("/auth/login");
     } catch (e) {

@@ -5,7 +5,7 @@ import styles from "./AuthForm.module.css";
 import { useState } from "react";
 
 interface AuthFormPropsType {
-  onLoginSubmit: (id: string, pw: string) => void;
+  onLoginSubmit: (email: string, pw: string) => void;
   submitBtnText: string;
 }
 
@@ -13,8 +13,8 @@ export default function AuthForm({
   onLoginSubmit,
   submitBtnText,
 }: AuthFormPropsType) {
-  const [idValue, setIdValue] = useState("");
-  const [idIsValid, setIdIsValid] = useState(false);
+  const [emailValue, setEmailValue] = useState("");
+  const [emailIsValid, setEmailIsValid] = useState(false);
 
   const [pwValue, setPwValue] = useState("");
   const [pwIsValid, setPwIsValid] = useState(false);
@@ -24,15 +24,15 @@ export default function AuthForm({
    * - 상태 저장
    * - 유효성 검사
    */
-  const onIdInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newIdValue = e.target.value;
+  const onEmailInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newEmailValue = e.target.value;
 
-    setIdValue(newIdValue);
+    setEmailValue(newEmailValue);
 
-    if (newIdValue.includes("@") && newIdValue.includes(".")) {
-      setIdIsValid(true);
+    if (newEmailValue.includes("@") && newEmailValue.includes(".")) {
+      setEmailIsValid(true);
     } else {
-      setIdIsValid(false);
+      setEmailIsValid(false);
     }
   };
 
@@ -58,22 +58,24 @@ export default function AuthForm({
    */
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onLoginSubmit(idValue, pwValue);
+    onLoginSubmit(emailValue, pwValue);
   };
 
   return (
     <form className={styles.form} onSubmit={onSubmit}>
       <div className={styles["input-wrapper"]}>
-        <Label text="ID" isRequired />
+        <Label text="Email" isRequired />
         <Input
-          value={idValue}
-          status={idIsValid ? "success" : !idValue.length ? "default" : "error"}
+          value={emailValue}
+          status={
+            emailIsValid ? "success" : !emailValue.length ? "default" : "error"
+          }
           helperMessage={
-            !idIsValid && idValue.length
+            !emailIsValid && emailValue.length
               ? "올바른 이메일 형식으로 입력해주세요."
               : ""
           }
-          onChange={onIdInputChange}
+          onChange={onEmailInputChange}
         />
       </div>
       <div className={styles["input-wrapper"]}>
@@ -90,7 +92,7 @@ export default function AuthForm({
       <Button
         text={submitBtnText}
         type="submit"
-        disabled={!(idIsValid && pwIsValid)}
+        disabled={!(emailIsValid && pwIsValid)}
       />
     </form>
   );
