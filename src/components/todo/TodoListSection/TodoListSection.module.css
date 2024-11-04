@@ -11,7 +11,37 @@
   justify-content: end;
 }
 
-.todo-list-container {
-  /* TODO :: 삭제 예정 */
-  border: 1px solid #ccc;
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.todo-item {
+  border-bottom: 1px solid #ffa322;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+}
+
+.todo-item:hover {
+  background-color: #ffeed7;
+}
+
+.todo-title {
+  color: black;
+  font-weight: 600;
+  padding-left: 10px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  max-width: 80%;
+}
+
+.todo-last-update {
+  font-size: 12px;
+  color: #a4a4a4;
+  padding-right: 10px;
 }
