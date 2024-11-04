@@ -132,3 +132,7 @@ button:focus,
 button:active {
   outline: none;
 }
+
+body {
+  display: block;
+}
