@@ -2,13 +2,14 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SingupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
+import TodoListPage from "./pages/TodoListPage";
 
 function App() {
   return (
     <Router>
       <Routes>
         {/* 루트 - Todo 목록 페이지 */}
-        {/* <Route path="/" element={<TodoListPage />} /> */}
+        <Route path="/" element={<TodoListPage />} />
 
         {/* Todo 상세 페이지 */}
         {/* <Route path="/:id" element={<TodoDetailPage />} /> */}
