@@ -1,12 +1,21 @@
-import { PropsWithChildren } from "react";
+import { CSSProperties, PropsWithChildren } from "react";
 import Header from "../Header";
 import styles from "./RootLayout.module.css";
 
-export default function RootLayout({ children }: PropsWithChildren) {
+interface RootLayoutPropsType extends PropsWithChildren {
+  mainStyle?: CSSProperties;
+}
+
+export default function RootLayout({
+  mainStyle,
+  children,
+}: RootLayoutPropsType) {
   return (
     <>
       <Header />
-      <main className={styles.main}>{children}</main>
+      <main className={styles.main} style={mainStyle}>
+        {children}
+      </main>
     </>
   );
 }
