@@ -1,9 +1,5 @@
-import Header from "@/components/layout/Header";
+import RootLayout from "@/components/layout/RootLayout";
 
 export default function TodoListPage() {
-  return (
-    <>
-      <Header></Header>TodoListPage
-    </>
-  );
+  return <RootLayout>TodoListPage</RootLayout>;
 }
