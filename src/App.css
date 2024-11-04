@@ -133,6 +133,12 @@ button:active {
   outline: none;
 }
 
+button,
+button:hover {
+  background-color: transparent;
+  border: none;
+}
+
 body {
   display: block;
 }
