@@ -3,10 +3,21 @@ import styles from "./TodoPage.module.css";
 import TodoListSection from "@/components/todo/TodoListSection";
 import { useEffect, useState } from "react";
 import { getTodos } from "@/api/todoApi";
-import { TodoListType } from "@/types/todo.type";
+import { TodoListType, TodoType } from "@/types/todo.type";
+import TodoDetailSection from "@/components/todo/TodoDetailSection";
+import { useParams } from "react-router-dom";
 
 export default function TodoPage() {
+  const { id } = useParams();
   const [todos, setTodos] = useState<TodoListType>([]);
+  const [selectedTodo, setSelectedTodo] = useState<TodoType | null>(null);
+
+  useEffect(() => {
+    if (id) {
+      const todo = todos.find((todo) => todo.id === id);
+      setSelectedTodo(todo || null);
+    }
+  }, [id]);
 
   useEffect(() => {
     // 초기 렌더링 시 todos 초기화
@@ -24,7 +35,7 @@ export default function TodoPage() {
       {/* todo 목록 */}
       <TodoListSection todos={todos} />
       {/* todo 상세 */}
-      <TodoListSection todos={todos} />
+      <TodoDetailSection todo={selectedTodo} />
     </RootLayout>
   );
 }
