@@ -15,6 +15,7 @@
   outline: 1px solid transparent;
   border-radius: 6px;
   font-size: 16px;
+  box-sizing: border-box;
 }
 
 .input:disabled {
