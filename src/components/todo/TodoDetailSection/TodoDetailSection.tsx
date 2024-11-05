@@ -4,10 +4,10 @@ import { TodoType } from "@/types/todo.type";
 import { formatToYYYYMMDD } from "@/utils/formatDate";
 import { useState } from "react";
 import Modal from "@/components/common/Modal";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface TodoDetailSectionPropsType {
-  todo: TodoType | null;
+  todo: TodoType;
   deleteTodo: (todoId: string) => void;
 }
 
@@ -17,11 +17,18 @@ export default function TodoDetailSection({
   deleteTodo,
 }: TodoDetailSectionPropsType) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
 
   /** 삭제 버튼 클릭 이벤트 메서드 */
-  const onDeleteClick = () => {
+  const onDeleteBtnClick = () => {
     setIsShowDeleteModal(true); // 모달 활성화
+  };
+
+  /** 수정 버튼 클릭 이벤트 메서드 */
+  const onEditBtnClick = () => {
+    // 수정관련 쿼리 스트링 추가
+    navigate(`${location.pathname}?mode=edit`);
   };
 
   /** 모달 비활성화 메서드 */
@@ -46,34 +53,32 @@ export default function TodoDetailSection({
             text="삭제"
             styleType="secondary"
             style={{ width: "80px" }}
-            onClick={onDeleteClick}
+            onClick={onDeleteBtnClick}
           />
-          <Button text="수정" style={{ width: "80px" }} />
+          <Button
+            text="수정"
+            style={{ width: "80px" }}
+            onClick={onEditBtnClick}
+          />
         </header>
-        {todo ? (
-          <div className={styles["todo-container"]}>
-            <h3 className={styles.title}>{todo.title}</h3>
-            <div className={styles["date-container"]}>
-              <div className={styles["date-wrapper"]}>
-                <span className={styles["date-desc"]}>Created</span>
-                <p className={styles["date-text"]}>
-                  {formatToYYYYMMDD(todo.createdAt)}
-                </p>
-              </div>
-              <div className={styles["date-wrapper"]}>
-                <span className={styles["date-desc"]}>Last Updated</span>
-                <p className={styles["date-text"]}>
-                  {formatToYYYYMMDD(todo.updatedAt)}
-                </p>
-              </div>
+        <div className={styles["todo-container"]}>
+          <h3 className={styles.title}>{todo.title}</h3>
+          <div className={styles["date-container"]}>
+            <div className={styles["date-wrapper"]}>
+              <span className={styles["date-desc"]}>Created</span>
+              <p className={styles["date-text"]}>
+                {formatToYYYYMMDD(todo.createdAt)}
+              </p>
             </div>
-            <p>{todo.content}</p>
+            <div className={styles["date-wrapper"]}>
+              <span className={styles["date-desc"]}>Last Updated</span>
+              <p className={styles["date-text"]}>
+                {formatToYYYYMMDD(todo.updatedAt)}
+              </p>
+            </div>
           </div>
-        ) : (
-          <div className={styles["non-desc-wrapper"]}>
-            <strong className={styles["non-desc"]}>todo를 선택해주세요.</strong>
-          </div>
-        )}
+          <p>{todo.content}</p>
+        </div>
       </section>
       <Modal
         isShow={isShowDeleteModal}

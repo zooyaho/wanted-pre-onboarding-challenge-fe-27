@@ -6,6 +6,8 @@ import Textarea from "@/components/common/Textarea";
 import { useState } from "react";
 
 interface TodoFormPropsType {
+  defaultTitle?: string;
+  defaultContent?: string;
   onSubmit: (titleValue: string, contentValue: string) => void;
   mainButton: {
     syleType?: "primary" | "secondary";
@@ -23,12 +25,14 @@ interface TodoFormPropsType {
 
 /** Todo 작성/수정 Form */
 export default function TodoForm({
+  defaultTitle = "",
+  defaultContent = "",
   onSubmit,
   mainButton,
   subButton,
 }: TodoFormPropsType) {
-  const [titleValue, setTitleValue] = useState("");
-  const [contentValue, setContentValue] = useState("");
+  const [titleValue, setTitleValue] = useState(defaultTitle);
+  const [contentValue, setContentValue] = useState(defaultContent);
 
   const onTitleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
