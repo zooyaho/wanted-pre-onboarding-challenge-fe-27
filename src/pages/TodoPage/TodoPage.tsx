@@ -1,16 +1,20 @@
 import RootLayout from "@/components/layout/RootLayout";
 import styles from "./TodoPage.module.css";
 import TodoListSection from "@/components/todo/TodoListSection";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { deleteTodo, getTodos } from "@/api/todoApi";
 import { TodoListType, TodoType } from "@/types/todo.type";
 import TodoDetailSection from "@/components/todo/TodoDetailSection";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 
 export default function TodoPage() {
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const mode = searchParams.get("mode");
   const [todos, setTodos] = useState<TodoListType>([]);
   const [selectedTodo, setSelectedTodo] = useState<TodoType | null>(null);
+
+  const isEditMode = useMemo(() => mode === "edit", [mode]);
 
   /** todo 목록 호출 메서드
    * - 상태에 저장
@@ -55,8 +59,13 @@ export default function TodoPage() {
     <RootLayout mainStyle={{ gap: "20px" }}>
       {/* todo 목록 */}
       <TodoListSection todos={todos} />
-      {/* todo 상세 */}
-      <TodoDetailSection todo={selectedTodo} deleteTodo={fetchDeleteTodo} />
+      {isEditMode ? (
+        // todo 수정
+        <h1>edit mode</h1>
+      ) : (
+        // todo 상세
+        <TodoDetailSection todo={selectedTodo} deleteTodo={fetchDeleteTodo} />
+      )}
     </RootLayout>
   );
 }

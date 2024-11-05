@@ -4,7 +4,7 @@ import { TodoType } from "@/types/todo.type";
 import { formatToYYYYMMDD } from "@/utils/formatDate";
 import { useState } from "react";
 import Modal from "@/components/common/Modal";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface TodoDetailSectionPropsType {
   todo: TodoType | null;
@@ -17,11 +17,18 @@ export default function TodoDetailSection({
   deleteTodo,
 }: TodoDetailSectionPropsType) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
 
   /** 삭제 버튼 클릭 이벤트 메서드 */
-  const onDeleteClick = () => {
+  const onDeleteBtnClick = () => {
     setIsShowDeleteModal(true); // 모달 활성화
+  };
+
+  /** 수정 버튼 클릭 이벤트 메서드 */
+  const onEditBtnClick = () => {
+    // 수정관련 쿼리 스트링 추가
+    navigate(`${location.pathname}?mode=edit`);
   };
 
   /** 모달 비활성화 메서드 */
@@ -46,9 +53,13 @@ export default function TodoDetailSection({
             text="삭제"
             styleType="secondary"
             style={{ width: "80px" }}
-            onClick={onDeleteClick}
+            onClick={onDeleteBtnClick}
           />
-          <Button text="수정" style={{ width: "80px" }} />
+          <Button
+            text="수정"
+            style={{ width: "80px" }}
+            onClick={onEditBtnClick}
+          />
         </header>
         {todo ? (
           <div className={styles["todo-container"]}>
