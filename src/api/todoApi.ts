@@ -20,3 +20,13 @@ export const deleteTodo = async (id: string) => {
   const response = await axiosInstance.delete(`/todos/${id}`);
   return response.data;
 };
+
+/** todo 수정 */
+export const putUpdateTodo = async (
+  id: string,
+  title: string,
+  content: string
+) => {
+  const response = await axiosInstance.put(`/todos/${id}`, { title, content });
+  return response.data;
+};
