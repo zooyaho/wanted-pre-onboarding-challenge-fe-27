@@ -82,6 +82,7 @@ export default function AuthForm({
         <Label text="PW" isRequired />
         <Input
           value={pwValue}
+          type="password"
           status={pwIsValid ? "success" : !pwValue.length ? "default" : "error"}
           helperMessage={
             !pwIsValid && pwValue.length ? "8자 이상 입력 해주세요." : ""

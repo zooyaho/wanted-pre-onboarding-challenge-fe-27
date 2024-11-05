@@ -1,6 +1,6 @@
 import Button from "@/components/common/Button";
 import styles from "./Header.module.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Modal from "@/components/common/Modal";
 import { useState } from "react";
 
@@ -29,7 +29,9 @@ export default function Header() {
   return (
     <>
       <header className={styles.header}>
-        <h1 className={styles.logo}>TODO</h1>
+        <Link to={"/"}>
+          <h1 className={styles.logo}>TODO</h1>
+        </Link>
         <Button
           text="로그아웃"
           styleType="secondary"
