@@ -8,13 +8,13 @@ import { useNavigate } from "react-router-dom";
 
 interface TodoDetailSectionPropsType {
   todo: TodoType | null;
-  onDeleteTodoConfirm: (todoId: string) => void;
+  deleteTodo: (todoId: string) => void;
 }
 
 /** todo 읽기 section */
 export default function TodoDetailSection({
   todo,
-  onDeleteTodoConfirm,
+  deleteTodo,
 }: TodoDetailSectionPropsType) {
   const navigate = useNavigate();
   const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
@@ -30,10 +30,10 @@ export default function TodoDetailSection({
   };
 
   /** 삭제 확인 버튼 클릭 메서드 */
-  const onDeleteConfirmClick = () => {
+  const onDeleteTodoConfirm = () => {
     if (!todo) return;
 
-    onDeleteTodoConfirm(todo.id); // 삭제 api 호출
+    deleteTodo(todo.id); // 삭제 api 호출
     closeDeleteConfirmModal(); // 모달 비활성화
     navigate("/", { replace: true }); // 경로 리다이렉트
   };
@@ -80,7 +80,7 @@ export default function TodoDetailSection({
         content="Todo를 삭제 하시겠습니까?"
         isShowCloseBtn
         onClose={closeDeleteConfirmModal}
-        mainButton={{ text: "확인", onClick: onDeleteConfirmClick }}
+        mainButton={{ text: "확인", onClick: onDeleteTodoConfirm }}
         subButton={{ text: "취소", onClick: closeDeleteConfirmModal }}
       />
     </>

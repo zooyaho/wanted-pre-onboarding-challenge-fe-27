@@ -14,3 +14,9 @@ export const postCreateTodo = async (title: string, content: string) => {
   });
   return response.data;
 };
+
+/** todo 삭제 */
+export const deleteTodo = async (id: string) => {
+  const response = await axiosInstance.delete(`/todos/${id}`);
+  return response.data;
+};
