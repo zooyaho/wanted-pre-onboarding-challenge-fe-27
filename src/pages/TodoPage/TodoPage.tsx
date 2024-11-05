@@ -75,6 +75,8 @@ export default function TodoPage() {
       // 선택한 todo가 있을 경우 상태 저장
       const todo = todos.find((todo) => todo.id === id);
       setSelectedTodo(todo || null);
+    } else {
+      setSelectedTodo(null);
     }
   }, [id, todos]);
 
