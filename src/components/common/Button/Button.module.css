@@ -6,10 +6,6 @@
   line-height: 1.3;
 }
 
-.button:hover {
-  border: none;
-}
-
 .button:disabled {
   transition: none;
   -webkit-font-smoothing: none;

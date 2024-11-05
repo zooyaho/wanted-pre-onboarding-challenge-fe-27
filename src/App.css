@@ -3,6 +3,28 @@
   License: none (public domain)
 */
 
+/* 모든 스크롤바에 스타일 적용 */
+::-webkit-scrollbar {
+  width: 8px; /* 세로 스크롤바 너비 */
+  height: 8px; /* 가로 스크롤바 너비 */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* 트랙 배경 */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #e0e0e0; /* 스크롤바 색상 */
+  border-radius: 10px;
+  border: 2px solid transparent; /* 스크롤바 여백 */
+  background-clip: content-box;
+}
+
+/* 스크롤바 hover 효과 */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #c0c0c0;
+}
+
 html,
 body,
 div,
@@ -91,6 +113,17 @@ video {
   font: inherit;
   vertical-align: baseline;
 }
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* 전체 페이지에 스크롤을 방지 */
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
 /* HTML5 display-role reset for older browsers */
 article,
 aside,
@@ -131,4 +164,14 @@ table {
 button:focus,
 button:active {
   outline: none;
+}
+
+button,
+button:hover {
+  background-color: transparent;
+  border: none;
+}
+
+body {
+  display: block;
 }

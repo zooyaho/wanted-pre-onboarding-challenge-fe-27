@@ -1,0 +1,5 @@
+.section {
+  width: 60vw;
+  height: calc(90vh - 100px);
+  margin: 50px auto;
+}
