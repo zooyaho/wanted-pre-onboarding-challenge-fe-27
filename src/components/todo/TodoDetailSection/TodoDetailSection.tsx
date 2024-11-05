@@ -37,7 +37,9 @@ export default function TodoDetailSection({
           <p>{todo.content}</p>
         </div>
       ) : (
-        <strong className={styles["non-desc"]}>todo를 선택해주세요.</strong>
+        <div className={styles["non-desc-wrapper"]}>
+          <strong className={styles["non-desc"]}>todo를 선택해주세요.</strong>
+        </div>
       )}
     </section>
   );

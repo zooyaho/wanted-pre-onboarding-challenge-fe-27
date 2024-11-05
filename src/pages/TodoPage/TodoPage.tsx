@@ -13,11 +13,11 @@ export default function TodoPage() {
   const [selectedTodo, setSelectedTodo] = useState<TodoType | null>(null);
 
   useEffect(() => {
-    if (id) {
+    if (id && todos.length > 0) {
       const todo = todos.find((todo) => todo.id === id);
       setSelectedTodo(todo || null);
     }
-  }, [id]);
+  }, [id, todos]);
 
   useEffect(() => {
     // 초기 렌더링 시 todos 초기화
@@ -26,8 +26,6 @@ export default function TodoPage() {
       setTodos(todos.data);
     };
     fetchGetTodos();
-
-    // TODO :: 경로 변경 시 todos 업데이트
   }, []);
 
   return (

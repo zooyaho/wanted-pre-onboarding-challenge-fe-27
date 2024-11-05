@@ -54,7 +54,15 @@
   color: black;
 }
 
+.non-desc-wrapper {
+  height: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .non-desc {
-  font-size: 20px;
+  font-size: 18px;
+  font-weight: 600;
   color: rgb(97, 97, 97);
 }
