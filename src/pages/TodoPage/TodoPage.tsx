@@ -6,6 +6,7 @@ import { deleteTodo, getTodos } from "@/api/todoApi";
 import { TodoListType, TodoType } from "@/types/todo.type";
 import TodoDetailSection from "@/components/todo/TodoDetailSection";
 import { useParams, useSearchParams } from "react-router-dom";
+import TodoEditSection from "@/components/todo/TodoEditSection";
 
 export default function TodoPage() {
   const { id } = useParams();
@@ -59,9 +60,13 @@ export default function TodoPage() {
     <RootLayout mainStyle={{ gap: "20px" }}>
       {/* todo 목록 */}
       <TodoListSection todos={todos} />
-      {isEditMode ? (
+      {!selectedTodo ? (
+        <div className={styles["non-desc-wrapper"]}>
+          <strong className={styles["non-desc"]}>todo를 선택해주세요.</strong>
+        </div>
+      ) : isEditMode ? (
         // todo 수정
-        <h1>edit mode</h1>
+        <TodoEditSection todo={selectedTodo} />
       ) : (
         // todo 상세
         <TodoDetailSection todo={selectedTodo} deleteTodo={fetchDeleteTodo} />

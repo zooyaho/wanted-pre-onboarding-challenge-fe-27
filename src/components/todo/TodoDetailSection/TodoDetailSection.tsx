@@ -7,7 +7,7 @@ import Modal from "@/components/common/Modal";
 import { useLocation, useNavigate } from "react-router-dom";
 
 interface TodoDetailSectionPropsType {
-  todo: TodoType | null;
+  todo: TodoType;
   deleteTodo: (todoId: string) => void;
 }
 
@@ -61,30 +61,24 @@ export default function TodoDetailSection({
             onClick={onEditBtnClick}
           />
         </header>
-        {todo ? (
-          <div className={styles["todo-container"]}>
-            <h3 className={styles.title}>{todo.title}</h3>
-            <div className={styles["date-container"]}>
-              <div className={styles["date-wrapper"]}>
-                <span className={styles["date-desc"]}>Created</span>
-                <p className={styles["date-text"]}>
-                  {formatToYYYYMMDD(todo.createdAt)}
-                </p>
-              </div>
-              <div className={styles["date-wrapper"]}>
-                <span className={styles["date-desc"]}>Last Updated</span>
-                <p className={styles["date-text"]}>
-                  {formatToYYYYMMDD(todo.updatedAt)}
-                </p>
-              </div>
+        <div className={styles["todo-container"]}>
+          <h3 className={styles.title}>{todo.title}</h3>
+          <div className={styles["date-container"]}>
+            <div className={styles["date-wrapper"]}>
+              <span className={styles["date-desc"]}>Created</span>
+              <p className={styles["date-text"]}>
+                {formatToYYYYMMDD(todo.createdAt)}
+              </p>
             </div>
-            <p>{todo.content}</p>
+            <div className={styles["date-wrapper"]}>
+              <span className={styles["date-desc"]}>Last Updated</span>
+              <p className={styles["date-text"]}>
+                {formatToYYYYMMDD(todo.updatedAt)}
+              </p>
+            </div>
           </div>
-        ) : (
-          <div className={styles["non-desc-wrapper"]}>
-            <strong className={styles["non-desc"]}>todo를 선택해주세요.</strong>
-          </div>
-        )}
+          <p>{todo.content}</p>
+        </div>
       </section>
       <Modal
         isShow={isShowDeleteModal}
