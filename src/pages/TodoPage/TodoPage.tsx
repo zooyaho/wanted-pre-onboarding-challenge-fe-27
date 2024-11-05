@@ -12,6 +12,7 @@ export default function TodoPage() {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const mode = searchParams.get("mode");
+
   const [todos, setTodos] = useState<TodoListType>([]);
   const [selectedTodo, setSelectedTodo] = useState<TodoType | null>(null);
 

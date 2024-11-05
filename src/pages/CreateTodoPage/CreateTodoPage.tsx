@@ -2,6 +2,7 @@ import { postCreateTodo } from "@/api/todoApi";
 import RootLayout from "@/components/layout/RootLayout";
 import TodoForm from "@/components/todo/TodoForm";
 import { useNavigate } from "react-router-dom";
+import styles from "./CreateTodoPage.module.css";
 
 /** todo 작성 페이지 */
 export default function CreateTodoPage() {
@@ -21,14 +22,16 @@ export default function CreateTodoPage() {
 
   return (
     <RootLayout>
-      <TodoForm
-        onSubmit={onCreateSubmit}
-        mainButton={{ text: "저장" }}
-        subButton={{
-          text: "취소",
-          onClick: onCancelCreate,
-        }}
-      />
+      <section className={styles.section}>
+        <TodoForm
+          onSubmit={onCreateSubmit}
+          mainButton={{ text: "저장" }}
+          subButton={{
+            text: "취소",
+            onClick: onCancelCreate,
+          }}
+        />
+      </section>
     </RootLayout>
   );
 }
