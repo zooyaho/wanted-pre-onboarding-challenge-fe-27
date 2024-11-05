@@ -2,45 +2,87 @@ import Button from "@/components/common/Button";
 import styles from "./TodoDetailSection.module.css";
 import { TodoType } from "@/types/todo.type";
 import { formatToYYYYMMDD } from "@/utils/formatDate";
+import { useState } from "react";
+import Modal from "@/components/common/Modal";
+import { useNavigate } from "react-router-dom";
 
 interface TodoDetailSectionPropsType {
   todo: TodoType | null;
+  onDeleteTodoConfirm: (todoId: string) => void;
 }
 
 /** todo 읽기 section */
 export default function TodoDetailSection({
   todo,
+  onDeleteTodoConfirm,
 }: TodoDetailSectionPropsType) {
+  const navigate = useNavigate();
+  const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
+
+  /** 삭제 버튼 클릭 이벤트 메서드 */
+  const onDeleteClick = () => {
+    setIsShowDeleteModal(true); // 모달 활성화
+  };
+
+  /** 모달 비활성화 메서드 */
+  const closeDeleteConfirmModal = () => {
+    setIsShowDeleteModal(false);
+  };
+
+  /** 삭제 확인 버튼 클릭 메서드 */
+  const onDeleteConfirmClick = () => {
+    if (!todo) return;
+
+    onDeleteTodoConfirm(todo.id); // 삭제 api 호출
+    closeDeleteConfirmModal(); // 모달 비활성화
+    navigate("/", { replace: true }); // 경로 리다이렉트
+  };
+
   return (
-    <section className={styles.section}>
-      <header className={styles.header}>
-        <Button text="삭제" styleType="secondary" style={{ width: "80px" }} />
-        <Button text="수정" style={{ width: "80px" }} />
-      </header>
-      {todo ? (
-        <div className={styles["todo-container"]}>
-          <h3 className={styles.title}>{todo.title}</h3>
-          <div className={styles["date-container"]}>
-            <div className={styles["date-wrapper"]}>
-              <span className={styles["date-desc"]}>Created</span>
-              <p className={styles["date-text"]}>
-                {formatToYYYYMMDD(todo.createdAt)}
-              </p>
+    <>
+      <section className={styles.section}>
+        <header className={styles.header}>
+          <Button
+            text="삭제"
+            styleType="secondary"
+            style={{ width: "80px" }}
+            onClick={onDeleteClick}
+          />
+          <Button text="수정" style={{ width: "80px" }} />
+        </header>
+        {todo ? (
+          <div className={styles["todo-container"]}>
+            <h3 className={styles.title}>{todo.title}</h3>
+            <div className={styles["date-container"]}>
+              <div className={styles["date-wrapper"]}>
+                <span className={styles["date-desc"]}>Created</span>
+                <p className={styles["date-text"]}>
+                  {formatToYYYYMMDD(todo.createdAt)}
+                </p>
+              </div>
+              <div className={styles["date-wrapper"]}>
+                <span className={styles["date-desc"]}>Last Updated</span>
+                <p className={styles["date-text"]}>
+                  {formatToYYYYMMDD(todo.updatedAt)}
+                </p>
+              </div>
             </div>
-            <div className={styles["date-wrapper"]}>
-              <span className={styles["date-desc"]}>Last Updated</span>
-              <p className={styles["date-text"]}>
-                {formatToYYYYMMDD(todo.updatedAt)}
-              </p>
-            </div>
+            <p>{todo.content}</p>
           </div>
-          <p>{todo.content}</p>
-        </div>
-      ) : (
-        <div className={styles["non-desc-wrapper"]}>
-          <strong className={styles["non-desc"]}>todo를 선택해주세요.</strong>
-        </div>
-      )}
-    </section>
+        ) : (
+          <div className={styles["non-desc-wrapper"]}>
+            <strong className={styles["non-desc"]}>todo를 선택해주세요.</strong>
+          </div>
+        )}
+      </section>
+      <Modal
+        isShow={isShowDeleteModal}
+        content="Todo를 삭제 하시겠습니까?"
+        isShowCloseBtn
+        onClose={closeDeleteConfirmModal}
+        mainButton={{ text: "확인", onClick: onDeleteConfirmClick }}
+        subButton={{ text: "취소", onClick: closeDeleteConfirmModal }}
+      />
+    </>
   );
 }

@@ -33,7 +33,7 @@ export default function TodoPage() {
       {/* todo 목록 */}
       <TodoListSection todos={todos} />
       {/* todo 상세 */}
-      <TodoDetailSection todo={selectedTodo} />
+      <TodoDetailSection todo={selectedTodo} onDeleteTodoConfirm={() => {}} />
     </RootLayout>
   );
 }
