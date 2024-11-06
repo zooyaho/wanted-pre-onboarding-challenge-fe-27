@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "@/constants/apiPaths";
+import { ROUTES } from "@/constants/routes";
 import axios from "axios";
 
 const axiosInstance = axios.create({
@@ -27,7 +28,7 @@ axiosInstance.interceptors.response.use(
       localStorage.removeItem("token");
       alert("토큰이 유효하지 않습니다. 다시 로그인해주세요.");
 
-      window.location.href = "/auth/login"; // 로그인 페이지로 리다이렉트
+      window.location.href = ROUTES.AUTH.LOGIN; // 로그인 페이지로 리다이렉트
     }
     return Promise.reject(error);
   }

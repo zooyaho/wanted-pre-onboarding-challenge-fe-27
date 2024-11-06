@@ -2,6 +2,7 @@ import AuthForm from "@/components/auth/AuthForm";
 import styles from "./SignupPage.module.css";
 import { postSignUp } from "@/api/authApi";
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from "@/constants/routes";
 
 export default function SingupPage() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function SingupPage() {
     try {
       const result = await postSignUp(email, pw);
       alert(result.message);
-      navigate("/auth/login");
+      navigate(ROUTES.AUTH.LOGIN);
     } catch (e) {
       alert("회원가입 실패. 다시 시도해주세요.");
     }

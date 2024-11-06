@@ -12,6 +12,7 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import TodoEditSection from "@/components/todo/TodoEditSection";
+import { ROUTES } from "@/constants/routes";
 
 export default function TodoPage() {
   const { id } = useParams();
@@ -58,7 +59,7 @@ export default function TodoPage() {
   const updateSettingTodo = async (newTitle: string, newContent: string) => {
     try {
       if (!id) {
-        navigate("/"); // id없을 경우 루트경로로 리다이렉트
+        navigate(ROUTES.HOME); // id없을 경우 루트경로로 리다이렉트
         return;
       }
 
