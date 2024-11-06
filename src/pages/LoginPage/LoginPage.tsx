@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { postLogin } from "@/api/authApi";
 import { useEffect } from "react";
 import { AxiosError } from "axios";
+import { ROUTES } from "@/constants/routes";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ export default function LoginPage() {
       const result = await postLogin(email, pw);
       localStorage.setItem("token", result.token);
       alert(result.message);
-      navigate("/");
+      navigate(ROUTES.HOME);
     } catch (error) {
       console.error(error);
       if ((error as AxiosError).response?.status === 400) {
@@ -36,7 +37,7 @@ export default function LoginPage() {
 
     if (token) {
       // 토큰이 있으면 루트경로로 리다이렉트
-      navigate("/");
+      navigate(ROUTES.HOME);
     }
   }, [navigate]);
 

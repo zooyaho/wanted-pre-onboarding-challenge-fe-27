@@ -3,6 +3,7 @@ import styles from "./Header.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import Modal from "@/components/common/Modal";
 import { useState } from "react";
+import { ROUTES } from "@/constants/routes";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ export default function Header() {
   const onConfirmLogout = () => {
     // 확인 시 토큰 삭제 후 로그인 페이지 리다이렉트
     localStorage.removeItem("token");
-    navigate("/auth/login");
+    navigate(ROUTES.AUTH.LOGIN);
   };
 
   /** 로그아웃 컨펌 모달의 취소 버튼 클릭 메서드 */

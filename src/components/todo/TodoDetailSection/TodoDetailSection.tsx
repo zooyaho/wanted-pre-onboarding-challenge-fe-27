@@ -5,6 +5,7 @@ import { formatToYYYYMMDD } from "@/utils/formatDate";
 import { useState } from "react";
 import Modal from "@/components/common/Modal";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ROUTES } from "@/constants/routes";
 
 interface TodoDetailSectionPropsType {
   todo: TodoType;
@@ -42,7 +43,7 @@ export default function TodoDetailSection({
 
     deleteTodo(todo.id); // 삭제 api 호출
     closeDeleteConfirmModal(); // 모달 비활성화
-    navigate("/", { replace: true }); // 경로 리다이렉트
+    navigate(ROUTES.HOME, { replace: true }); // 경로 리다이렉트
   };
 
   return (
