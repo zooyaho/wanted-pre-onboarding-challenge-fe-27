@@ -1,7 +1,8 @@
+import { API_PATHS } from "@/constants/apiPaths";
 import axiosInstance from "./axiosInstance";
 
 export const postLogin = async (email: string, password: string) => {
-  const response = await axiosInstance.post("/users/login", {
+  const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
     email,
     password,
   });
@@ -9,7 +10,7 @@ export const postLogin = async (email: string, password: string) => {
 };
 
 export const postSignUp = async (email: string, password: string) => {
-  const response = await axiosInstance.post("/users/create", {
+  const response = await axiosInstance.post(API_PATHS.AUTH.SIGNUP, {
     email,
     password,
   });
