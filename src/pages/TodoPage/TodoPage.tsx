@@ -12,6 +12,7 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import TodoEditSection from "@/components/todo/TodoEditSection";
+import { ROUTES } from "@/constants/routes";
 
 export default function TodoPage() {
   const { id } = useParams();
@@ -28,7 +29,7 @@ export default function TodoPage() {
   /** todo 목록 호출 메서드
    * - 상태에 저장
    */
-  const fetchGetTodos = async () => {
+  const settingTodos = async () => {
     try {
       const todos = await getTodos();
       setTodos(todos.data);
@@ -41,10 +42,10 @@ export default function TodoPage() {
    * - 삭제 후 todo 목록 호출
    * - 선택한 상태 초기화
    */
-  const fetchDeleteTodo = async (id: string) => {
+  const deleteSettingTodo = async (id: string) => {
     try {
       await deleteTodo(id);
-      fetchGetTodos();
+      settingTodos();
       setSelectedTodo(null);
     } catch (error) {
       alert("Todo 삭제가 진행되지 않았습니다.");
@@ -55,15 +56,15 @@ export default function TodoPage() {
    * - 수정 후 todo 목록 호출
    * - edit mode 취소
    */
-  const fetchUpdateTodo = async (newTitle: string, newContent: string) => {
+  const updateSettingTodo = async (newTitle: string, newContent: string) => {
     try {
       if (!id) {
-        navigate("/"); // id없을 경우 루트경로로 리다이렉트
+        navigate(ROUTES.HOME); // id없을 경우 루트경로로 리다이렉트
         return;
       }
 
       await putUpdateTodo(id, newTitle, newContent);
-      fetchGetTodos();
+      settingTodos();
       navigate(location.pathname);
     } catch (error) {
       alert("Todo 수정이 진행되지 않았습니다.");
@@ -82,7 +83,7 @@ export default function TodoPage() {
 
   useEffect(() => {
     // 초기 렌더링 시 todos 초기화
-    fetchGetTodos();
+    settingTodos();
   }, []);
 
   return (
@@ -95,10 +96,10 @@ export default function TodoPage() {
         </div>
       ) : isEditMode ? (
         // todo 수정
-        <TodoEditSection todo={selectedTodo} updateTodo={fetchUpdateTodo} />
+        <TodoEditSection todo={selectedTodo} updateTodo={updateSettingTodo} />
       ) : (
         // todo 상세
-        <TodoDetailSection todo={selectedTodo} deleteTodo={fetchDeleteTodo} />
+        <TodoDetailSection todo={selectedTodo} deleteTodo={deleteSettingTodo} />
       )}
     </RootLayout>
   );

@@ -4,28 +4,26 @@ import SingupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import TodoPage from "./pages/TodoPage";
 import CreateTodoPage from "./pages/CreateTodoPage";
+import { ROUTES } from "./constants/routes";
 
 function App() {
   return (
     <Router>
       <Routes>
         {/* 루트 - Todo 목록 페이지 */}
-        <Route path="/" element={<TodoPage />} />
+        <Route path={ROUTES.HOME} element={<TodoPage />} />
 
         {/* Todo 상세 페이지 */}
-        <Route path="/:id" element={<TodoPage />} />
+        <Route path={ROUTES.TODO_DETAIL()} element={<TodoPage />} />
 
         {/* Todo 작성 페이지 */}
-        <Route path="/create" element={<CreateTodoPage />} />
-
-        {/* Todo 수정 페이지 */}
-        {/* <Route path="/:id/edit" element={<TodoEditPage />} /> */}
+        <Route path={ROUTES.TODO_CREATE} element={<CreateTodoPage />} />
 
         {/* 로그인 페이지 */}
-        <Route path="/auth/login" element={<LoginPage />} />
+        <Route path={ROUTES.AUTH.LOGIN} element={<LoginPage />} />
 
         {/* 회원가입 페이지 */}
-        <Route path="/auth/signup" element={<SingupPage />} />
+        <Route path={ROUTES.AUTH.SIGNUP} element={<SingupPage />} />
       </Routes>
     </Router>
   );
