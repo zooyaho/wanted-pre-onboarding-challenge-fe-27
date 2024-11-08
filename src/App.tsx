@@ -5,12 +5,11 @@ import LoginPage from "./pages/LoginPage";
 import TodoPage from "./pages/TodoPage";
 import CreateTodoPage from "./pages/CreateTodoPage";
 import { ROUTES } from "./constants/routes";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "./api/queryClient";
+import Providers from "./providers";
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <Providers>
       <Router>
         <Routes>
           {/* 루트 - Todo 목록 페이지 */}
@@ -29,7 +28,7 @@ function App() {
           <Route path={ROUTES.AUTH.SIGNUP} element={<SingupPage />} />
         </Routes>
       </Router>
-    </QueryClientProvider>
+    </Providers>
   );
 }
 

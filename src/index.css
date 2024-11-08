@@ -152,6 +152,7 @@ button,
 button:hover {
   background-color: transparent;
   border: none;
+  cursor: pointer;
 }
 
 a {
