@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteTodo, getTodos, postCreateTodo } from "./todoApi";
+import { deleteTodo, getTodos, postCreateTodo, putUpdateTodo } from "./todoApi";
 import { QUERY_KEY } from "@/constants/queryKeys";
-import { PostReqTodoType } from "@/types/todo.type";
-import { useNavigate } from "react-router-dom";
+import { PostCreateReqTodoType, PutUpdateReqTodoType } from "@/types/todo.type";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "@/constants/routes";
 
 /** todo 목록 */
@@ -49,7 +49,7 @@ export const usePostCreateTodo = () => {
     ...rest
   } = useMutation({
     mutationKey: [QUERY_KEY.TODO.POST_CREATE_TODO],
-    mutationFn: (newTodo: PostReqTodoType) =>
+    mutationFn: (newTodo: PostCreateReqTodoType) =>
       postCreateTodo(newTodo.title, newTodo.content),
     onSuccess() {
       queryClient.invalidateQueries({
@@ -100,6 +100,42 @@ export const useDeleteTodo = () => {
     mutateAsyncDeleteTodo,
     isDeleteTodoPending,
     isDeleteTodoSuccess,
+    ...rest,
+  };
+};
+
+/** todo 수정 */
+export const useUpdateTodo = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const queryClient = useQueryClient();
+
+  const {
+    mutate: mutatePutUpdateTodo,
+    mutateAsync: mutateAsyncPutUpdateTodo,
+    isPending: isPutUpdateTodoPending,
+    isSuccess: isPutUpdateTodoSuccess,
+    ...rest
+  } = useMutation({
+    mutationKey: [QUERY_KEY.TODO.PUT_UPDATE_TODO],
+    mutationFn: (reqParams: PutUpdateReqTodoType) =>
+      putUpdateTodo(reqParams.id, reqParams.title, reqParams.content),
+    onSuccess() {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.TODO.GET_TODOS],
+      });
+      navigate(location.pathname);
+    },
+    onError(error) {
+      alert("Todo 수정이 진행되지 않았습니다.");
+    },
+  });
+
+  return {
+    mutatePutUpdateTodo,
+    mutateAsyncPutUpdateTodo,
+    isPutUpdateTodoPending,
+    isPutUpdateTodoSuccess,
     ...rest,
   };
 };

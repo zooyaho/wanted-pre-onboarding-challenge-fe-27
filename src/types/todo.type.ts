@@ -12,4 +12,6 @@ export interface GetResTodosType {
   data: TodoListType;
 }
 
-export type PostReqTodoType = Pick<TodoType, "title" | "content">;
+export type PostCreateReqTodoType = Pick<TodoType, "title" | "content">;
+
+export type PutUpdateReqTodoType = Pick<TodoType, "id" | "title" | "content">;

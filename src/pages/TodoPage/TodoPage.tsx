@@ -13,7 +13,11 @@ import {
 } from "react-router-dom";
 import TodoEditSection from "@/components/todo/TodoEditSection";
 import { ROUTES } from "@/constants/routes";
-import { useDeleteTodo, useGetTodos } from "@/api/todo/todoApi.query";
+import {
+  useDeleteTodo,
+  useGetTodos,
+  useUpdateTodo,
+} from "@/api/todo/todoApi.query";
 
 export default function TodoPage() {
   const { id } = useParams();
@@ -23,6 +27,7 @@ export default function TodoPage() {
   const mode = searchParams.get("mode");
   const { todosData, refetchTodosData, isTodosFetchLoading } = useGetTodos();
   const { mutateAsyncDeleteTodo, isDeleteTodoPending } = useDeleteTodo();
+  const { mutateAsyncPutUpdateTodo } = useUpdateTodo();
 
   const [selectedTodo, setSelectedTodo] = useState<TodoType | null>(null);
 
@@ -41,19 +46,12 @@ export default function TodoPage() {
    * - 수정 후 todo 목록 호출
    * - edit mode 취소
    */
-  const updateSettingTodo = async (newTitle: string, newContent: string) => {
-    try {
-      if (!id) {
-        navigate(ROUTES.HOME); // id없을 경우 루트경로로 리다이렉트
-        return;
-      }
-
-      await putUpdateTodo(id, newTitle, newContent);
-      refetchTodosData();
-      navigate(location.pathname);
-    } catch (error) {
-      alert("Todo 수정이 진행되지 않았습니다.");
+  const updateSettingTodo = async (title: string, content: string) => {
+    if (!id) {
+      navigate(ROUTES.HOME); // id없을 경우 루트경로로 리다이렉트
+      return;
     }
+    await mutateAsyncPutUpdateTodo({ id, title, content });
   };
 
   useEffect(() => {

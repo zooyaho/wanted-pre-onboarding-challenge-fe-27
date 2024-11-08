@@ -6,11 +6,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 interface TodoEditSectionPropsType {
   todo: TodoType;
   updateTodo: (title: string, content: string) => void;
+  isPutUpdateTodoPending?: boolean;
 }
 
 export default function TodoEditSection({
   todo,
   updateTodo,
+  isPutUpdateTodoPending,
 }: TodoEditSectionPropsType) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -31,10 +33,11 @@ export default function TodoEditSection({
         defaultTitle={todo.title}
         defaultContent={todo.content}
         onSubmit={onUpdateSubmit}
-        mainButton={{ text: "완료" }}
+        mainButton={{ text: "완료", isLoading: isPutUpdateTodoPending }}
         subButton={{
           text: "취소",
           onClick: onCancelEdit,
+          isDisabled: isPutUpdateTodoPending,
         }}
       />
     </section>
