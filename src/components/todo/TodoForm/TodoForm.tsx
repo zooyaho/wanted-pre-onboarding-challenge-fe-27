@@ -19,6 +19,7 @@ interface TodoFormPropsType {
     syleType?: "primary" | "secondary";
     text: string;
     isLoading?: boolean;
+    isDisabled?: boolean;
     onClick: () => void;
   };
 }
@@ -59,6 +60,7 @@ export default function TodoForm({
             text={subButton.text}
             onClick={subButton.onClick}
             isLoading={subButton.isLoading}
+            disabled={subButton.isDisabled}
             styleType={subButton.syleType || "secondary"}
             style={{ width: "80px" }}
           />

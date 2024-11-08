@@ -1,32 +1,25 @@
 import AuthForm from "@/components/auth/AuthForm";
 import styles from "./SignupPage.module.css";
-import { postSignUp } from "@/api/authApi";
-import { useNavigate } from "react-router-dom";
-import { ROUTES } from "@/constants/routes";
+import { usePostSignUp } from "@/api/auth/authApi.query";
 
 export default function SingupPage() {
-  const navigate = useNavigate();
+  const { mutatePostSignUp, isPending } = usePostSignUp();
 
   /**
    * 회원가입 이벤트 핸들러
-   * - 회원가입 요청
-   * > 성공 시 로그인 페이지로 이동
-   * > 실패 시 alert 활성화
    */
-  const onSignupSubmit = async (email: string, pw: string) => {
-    try {
-      const result = await postSignUp(email, pw);
-      alert(result.message);
-      navigate(ROUTES.AUTH.LOGIN);
-    } catch (e) {
-      alert("회원가입 실패. 다시 시도해주세요.");
-    }
+  const onSignupSubmit = (email: string, password: string) => {
+    mutatePostSignUp({ email, password });
   };
 
   return (
     <section className={styles.section}>
       <h1 className={styles.title}>회원가입</h1>
-      <AuthForm onLoginSubmit={onSignupSubmit} submitBtnText="회원가입" />
+      <AuthForm
+        onLoginSubmit={onSignupSubmit}
+        submitBtnText="회원가입"
+        isSubmitLoading={isPending}
+      />
     </section>
   );
 }
