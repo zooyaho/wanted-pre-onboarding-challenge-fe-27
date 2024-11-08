@@ -15,10 +15,10 @@ export default function Button({
 }: ButtonPropsType) {
   return (
     <button
+      {...props}
       type={props.type ?? "button"}
       className={`${styles.button} ${styles[`button-${styleType}`]}`}
-      disabled={props.disabled ?? isLoading}
-      {...props}
+      disabled={isLoading || props.disabled}
     >
       {isLoading ? "...Loaing" : text}
     </button>

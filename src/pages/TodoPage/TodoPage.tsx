@@ -70,12 +70,6 @@ export default function TodoPage() {
     }
   }, [id, todosData]);
 
-  useEffect(() => {
-    // TODO:: useGetTodos의 enabled 설정 후 삭제 예정
-    // 초기 렌더링 시 todos 초기화
-    refetchTodosData();
-  }, []);
-
   return (
     <RootLayout mainStyle={{ gap: "20px" }}>
       {/* todo 목록 */}

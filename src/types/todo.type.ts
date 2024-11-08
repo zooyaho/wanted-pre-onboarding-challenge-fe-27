@@ -8,6 +8,8 @@ export interface TodoType {
 
 export type TodoListType = TodoType[];
 
-export interface ResponseTodosType {
+export interface GetResTodosType {
   data: TodoListType;
 }
+
+export type PostReqTodoType = Pick<TodoType, "title" | "content">;

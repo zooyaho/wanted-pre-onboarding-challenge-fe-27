@@ -5,5 +5,6 @@ export const QUERY_KEY = {
   },
   TODO: {
     GET_TODOS: "getTodos",
+    POST_CREATE_TODO: "postCreateTodo",
   },
 };
