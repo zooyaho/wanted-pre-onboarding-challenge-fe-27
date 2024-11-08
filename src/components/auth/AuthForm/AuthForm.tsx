@@ -2,16 +2,20 @@ import Button from "@/components/common/Button";
 import Input from "@/components/common/Input";
 import Label from "@/components/common/Label";
 import styles from "./AuthForm.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface AuthFormPropsType {
   onLoginSubmit: (email: string, pw: string) => void;
   submitBtnText: string;
+  isSubmitLoading?: boolean;
+  isFetchError?: boolean;
 }
 
 export default function AuthForm({
   onLoginSubmit,
   submitBtnText,
+  isSubmitLoading,
+  isFetchError,
 }: AuthFormPropsType) {
   const [emailValue, setEmailValue] = useState("");
   const [emailIsValid, setEmailIsValid] = useState(false);
@@ -61,6 +65,13 @@ export default function AuthForm({
     onLoginSubmit(emailValue, pwValue);
   };
 
+  useEffect(() => {
+    if (isFetchError) {
+      setEmailIsValid(false);
+      setPwIsValid(false);
+    }
+  }, [isFetchError]);
+
   return (
     <form className={styles.form} onSubmit={onSubmit}>
       <div className={styles["input-wrapper"]}>
@@ -93,6 +104,7 @@ export default function AuthForm({
       <Button
         text={submitBtnText}
         type="submit"
+        isLoading={isSubmitLoading}
         disabled={!(emailIsValid && pwIsValid)}
       />
     </form>
