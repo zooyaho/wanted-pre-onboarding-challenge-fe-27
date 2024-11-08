@@ -2,15 +2,9 @@ import RootLayout from "@/components/layout/RootLayout";
 import styles from "./TodoPage.module.css";
 import TodoListSection from "@/components/todo/TodoListSection";
 import { useEffect, useMemo, useState } from "react";
-import { deleteTodo, putUpdateTodo } from "@/api/todo/todoApi";
 import { TodoType } from "@/types/todo.type";
 import TodoDetailSection from "@/components/todo/TodoDetailSection";
-import {
-  useLocation,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import TodoEditSection from "@/components/todo/TodoEditSection";
 import { ROUTES } from "@/constants/routes";
 import {
@@ -23,9 +17,8 @@ export default function TodoPage() {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const location = useLocation();
   const mode = searchParams.get("mode");
-  const { todosData, refetchTodosData, isTodosFetchLoading } = useGetTodos();
+  const { todosData, isTodosFetchLoading } = useGetTodos();
   const { mutateAsyncDeleteTodo, isDeleteTodoPending } = useDeleteTodo();
   const { mutateAsyncPutUpdateTodo } = useUpdateTodo();
 

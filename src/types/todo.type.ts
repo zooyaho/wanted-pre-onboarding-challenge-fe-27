@@ -11,6 +11,9 @@ export type TodoListType = TodoType[];
 export interface GetResTodosType {
   data: TodoListType;
 }
+export interface GetResTodoType {
+  data: TodoType;
+}
 
 export type PostCreateReqTodoType = Pick<TodoType, "title" | "content">;
 

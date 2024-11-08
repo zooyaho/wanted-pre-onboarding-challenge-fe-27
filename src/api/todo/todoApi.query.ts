@@ -1,5 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteTodo, getTodos, postCreateTodo, putUpdateTodo } from "./todoApi";
+import {
+  deleteTodo,
+  getTodos,
+  getTodo,
+  postCreateTodo,
+  putUpdateTodo,
+} from "./todoApi";
 import { QUERY_KEY } from "@/constants/queryKeys";
 import { PostCreateReqTodoType, PutUpdateReqTodoType } from "@/types/todo.type";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -33,6 +39,38 @@ export const useGetTodos = () => {
     refetchTodosData,
     isTodosFetchError,
     isTodosFetchLoading,
+    ...rest,
+  };
+};
+
+/** 개별 todo */
+export const useGetTodo = (id: string) => {
+  const {
+    data: todoData,
+    refetch: refetchTodoData,
+    isError: isTodoFetchError,
+    isLoading: isTodoFetchLoading,
+    ...rest
+  } = useQuery({
+    queryKey: [QUERY_KEY.TODO.GET_TODO, id],
+    queryFn: () => getTodo(id),
+    enabled: !!localStorage.getItem("token"), // TODO:: 인증이 완료 되었을 때 true
+    refetchOnMount: "always", // 무효화 시 refetch 실행
+    select: (result) => {
+      const { data } = result;
+      return data;
+    },
+  });
+
+  if (isTodoFetchError) {
+    alert("Todo 불러오기를 실패했습니다.");
+  }
+
+  return {
+    todoData,
+    refetchTodoData,
+    isTodoFetchError,
+    isTodoFetchLoading,
     ...rest,
   };
 };
