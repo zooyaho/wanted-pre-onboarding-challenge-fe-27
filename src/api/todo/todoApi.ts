@@ -1,8 +1,9 @@
 import { API_PATHS } from "@/constants/apiPaths";
-import axiosInstance from "./axiosInstance";
+import axiosInstance from "../axiosInstance";
+import { ResponseTodosType } from "@/types/todo.type";
 
 /** todo 목록 */
-export const getTodos = async () => {
+export const getTodos = async (): Promise<ResponseTodosType> => {
   const response = await axiosInstance.get(API_PATHS.TODOS);
   return response.data;
 };

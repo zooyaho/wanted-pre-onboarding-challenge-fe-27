@@ -7,3 +7,7 @@ export interface TodoType {
 }
 
 export type TodoListType = TodoType[];
+
+export interface ResponseTodosType {
+  data: TodoListType;
+}

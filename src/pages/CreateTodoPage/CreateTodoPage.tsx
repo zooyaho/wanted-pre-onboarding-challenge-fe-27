@@ -1,4 +1,4 @@
-import { postCreateTodo } from "@/api/todoApi";
+import { postCreateTodo } from "@/api/todo/todoApi";
 import RootLayout from "@/components/layout/RootLayout";
 import TodoForm from "@/components/todo/TodoForm";
 import { useNavigate } from "react-router-dom";

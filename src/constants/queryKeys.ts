@@ -3,4 +3,7 @@ export const QUERY_KEY = {
     POST_LOGIN: "postLogin",
     POST_SIGNUP: "postSignUp",
   },
+  TODO: {
+    GET_TODOS: "getTodos",
+  },
 };

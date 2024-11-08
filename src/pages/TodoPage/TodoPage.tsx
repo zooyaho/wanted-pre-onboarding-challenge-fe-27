@@ -2,8 +2,8 @@ import RootLayout from "@/components/layout/RootLayout";
 import styles from "./TodoPage.module.css";
 import TodoListSection from "@/components/todo/TodoListSection";
 import { useEffect, useMemo, useState } from "react";
-import { deleteTodo, getTodos, putUpdateTodo } from "@/api/todoApi";
-import { TodoListType, TodoType } from "@/types/todo.type";
+import { deleteTodo, putUpdateTodo } from "@/api/todo/todoApi";
+import { TodoType } from "@/types/todo.type";
 import TodoDetailSection from "@/components/todo/TodoDetailSection";
 import {
   useLocation,
@@ -13,6 +13,7 @@ import {
 } from "react-router-dom";
 import TodoEditSection from "@/components/todo/TodoEditSection";
 import { ROUTES } from "@/constants/routes";
+import { useGetTodos } from "@/api/todo/todoApi.query";
 
 export default function TodoPage() {
   const { id } = useParams();
@@ -20,23 +21,11 @@ export default function TodoPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const mode = searchParams.get("mode");
+  const { todosData, refetchTodosData, isTodosFetchLoading } = useGetTodos();
 
-  const [todos, setTodos] = useState<TodoListType>([]);
   const [selectedTodo, setSelectedTodo] = useState<TodoType | null>(null);
 
   const isEditMode = useMemo(() => mode === "edit", [mode]);
-
-  /** todo 목록 호출 메서드
-   * - 상태에 저장
-   */
-  const settingTodos = async () => {
-    try {
-      const todos = await getTodos();
-      setTodos(todos.data);
-    } catch (error) {
-      alert("Todo 목록 불러오기를 실패했습니다.");
-    }
-  };
 
   /** todo 삭제 호출 메서드
    * - 삭제 후 todo 목록 호출
@@ -45,7 +34,7 @@ export default function TodoPage() {
   const deleteSettingTodo = async (id: string) => {
     try {
       await deleteTodo(id);
-      settingTodos();
+      refetchTodosData();
       setSelectedTodo(null);
     } catch (error) {
       alert("Todo 삭제가 진행되지 않았습니다.");
@@ -64,7 +53,7 @@ export default function TodoPage() {
       }
 
       await putUpdateTodo(id, newTitle, newContent);
-      settingTodos();
+      refetchTodosData();
       navigate(location.pathname);
     } catch (error) {
       alert("Todo 수정이 진행되지 않았습니다.");
@@ -72,24 +61,25 @@ export default function TodoPage() {
   };
 
   useEffect(() => {
-    if (id && todos.length > 0) {
+    if (id && todosData && todosData.length > 0) {
       // 선택한 todo가 있을 경우 상태 저장
-      const todo = todos.find((todo) => todo.id === id);
+      const todo = todosData.find((todo) => todo.id === id);
       setSelectedTodo(todo || null);
     } else {
       setSelectedTodo(null);
     }
-  }, [id, todos]);
+  }, [id, todosData]);
 
   useEffect(() => {
+    // TODO:: useGetTodos의 enabled 설정 후 삭제 예정
     // 초기 렌더링 시 todos 초기화
-    settingTodos();
+    refetchTodosData();
   }, []);
 
   return (
     <RootLayout mainStyle={{ gap: "20px" }}>
       {/* todo 목록 */}
-      <TodoListSection todos={todos} />
+      <TodoListSection todos={todosData} isTodosLoading={isTodosFetchLoading} />
       {!selectedTodo ? (
         <div className={styles["non-desc-wrapper"]}>
           <strong className={styles["non-desc"]}>todo를 선택해주세요.</strong>
