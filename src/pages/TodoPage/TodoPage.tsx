@@ -1,29 +1,30 @@
-import RootLayout from "@/components/layout/RootLayout";
-import styles from "./TodoPage.module.css";
-import TodoListSection from "@/components/todo/TodoListSection";
-import { useEffect, useMemo, useState } from "react";
-import { TodoType } from "@/types/todo.type";
-import TodoDetailSection from "@/components/todo/TodoDetailSection";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import TodoEditSection from "@/components/todo/TodoEditSection";
-import { ROUTES } from "@/constants/routes";
 import {
   useDeleteTodo,
   useGetTodos,
   useUpdateTodo,
 } from "@/api/todo/todoApi.query";
+import RootLayout from "@/components/layout/RootLayout";
+import TodoDetailSection from "@/components/todo/TodoDetailSection";
+import TodoEditSection from "@/components/todo/TodoEditSection";
+import TodoListSection from "@/components/todo/TodoListSection";
+import { QUERY_KEY } from "@/constants/queryKeys";
+import { ROUTES } from "@/constants/routes";
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import styles from "./TodoPage.module.css";
 
 export default function TodoPage() {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const mode = searchParams.get("mode");
   const { todosData, isTodosFetchLoading } = useGetTodos();
   const { mutateAsyncDeleteTodo, isDeleteTodoPending } = useDeleteTodo();
   const { mutateAsyncPutUpdateTodo } = useUpdateTodo();
 
-  const [selectedTodo, setSelectedTodo] = useState<TodoType | null>(null);
-
+  const [isSelectedTodo, setIsSelectedTodo] = useState(false);
   const isEditMode = useMemo(() => mode === "edit", [mode]);
 
   /** todo 삭제 호출 메서드
@@ -32,7 +33,7 @@ export default function TodoPage() {
    */
   const deleteSettingTodo = async (id: string) => {
     await mutateAsyncDeleteTodo({ id });
-    setSelectedTodo(null);
+    setIsSelectedTodo(false);
   };
 
   /** todo 수정 호출 메서드
@@ -44,34 +45,40 @@ export default function TodoPage() {
       navigate(ROUTES.HOME); // id없을 경우 루트경로로 리다이렉트
       return;
     }
-    await mutateAsyncPutUpdateTodo({ id, title, content });
+    await mutateAsyncPutUpdateTodo(
+      { id, title, content },
+      {
+        onSuccess() {
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY.TODO.GET_TODO, id],
+          });
+        },
+      }
+    );
   };
 
   useEffect(() => {
-    if (id && todosData && todosData.length > 0) {
-      // 선택한 todo가 있을 경우 상태 저장
-      const todo = todosData.find((todo) => todo.id === id);
-      setSelectedTodo(todo || null);
+    if (id) {
+      setIsSelectedTodo(true);
     } else {
-      setSelectedTodo(null);
+      setIsSelectedTodo(false);
     }
-  }, [id, todosData]);
+  }, [id]);
 
   return (
     <RootLayout mainStyle={{ gap: "20px" }}>
       {/* todo 목록 */}
       <TodoListSection todos={todosData} isTodosLoading={isTodosFetchLoading} />
-      {!selectedTodo ? (
+      {!isSelectedTodo ? (
         <div className={styles["non-desc-wrapper"]}>
           <strong className={styles["non-desc"]}>todo를 선택해주세요.</strong>
         </div>
       ) : isEditMode ? (
         // todo 수정
-        <TodoEditSection todo={selectedTodo} updateTodo={updateSettingTodo} />
+        <TodoEditSection updateTodo={updateSettingTodo} />
       ) : (
         // todo 상세
         <TodoDetailSection
-          todo={selectedTodo}
           deleteTodo={deleteSettingTodo}
           isDeleteTodoPending={isDeleteTodoPending}
         />

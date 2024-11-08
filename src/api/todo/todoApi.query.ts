@@ -44,7 +44,7 @@ export const useGetTodos = () => {
 };
 
 /** 개별 todo */
-export const useGetTodo = (id: string) => {
+export const useGetTodo = (id?: string) => {
   const {
     data: todoData,
     refetch: refetchTodoData,
@@ -53,8 +53,8 @@ export const useGetTodo = (id: string) => {
     ...rest
   } = useQuery({
     queryKey: [QUERY_KEY.TODO.GET_TODO, id],
-    queryFn: () => getTodo(id),
-    enabled: !!localStorage.getItem("token"), // TODO:: 인증이 완료 되었을 때 true
+    queryFn: () => getTodo(id ?? ""),
+    enabled: !!localStorage.getItem("token") && !!id, // TODO:: 인증이 완료 되었을 때 true
     refetchOnMount: "always", // 무효화 시 refetch 실행
     select: (result) => {
       const { data } = result;

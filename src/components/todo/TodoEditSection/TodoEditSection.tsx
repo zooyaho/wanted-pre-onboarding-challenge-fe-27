@@ -1,21 +1,21 @@
-import { TodoType } from "@/types/todo.type";
 import TodoForm from "../TodoForm";
 import styles from "./TodoEditSection.module.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useGetTodo } from "@/api/todo/todoApi.query";
 
 interface TodoEditSectionPropsType {
-  todo: TodoType;
   updateTodo: (title: string, content: string) => void;
   isPutUpdateTodoPending?: boolean;
 }
 
 export default function TodoEditSection({
-  todo,
   updateTodo,
   isPutUpdateTodoPending,
 }: TodoEditSectionPropsType) {
   const navigate = useNavigate();
   const location = useLocation();
+  const { id } = useParams();
+  const { todoData, isTodoFetchLoading } = useGetTodo(id ?? undefined);
 
   /** 수정 취소 버튼 클릭 메서드 */
   const onCancelEdit = () => {
@@ -29,17 +29,21 @@ export default function TodoEditSection({
 
   return (
     <section className={styles.section}>
-      <TodoForm
-        defaultTitle={todo.title}
-        defaultContent={todo.content}
-        onSubmit={onUpdateSubmit}
-        mainButton={{ text: "완료", isLoading: isPutUpdateTodoPending }}
-        subButton={{
-          text: "취소",
-          onClick: onCancelEdit,
-          isDisabled: isPutUpdateTodoPending,
-        }}
-      />
+      {isTodoFetchLoading ? (
+        <p>todo 불러오는 중</p>
+      ) : (
+        <TodoForm
+          defaultTitle={todoData?.title || ""}
+          defaultContent={todoData?.content || ""}
+          onSubmit={onUpdateSubmit}
+          mainButton={{ text: "완료", isLoading: isPutUpdateTodoPending }}
+          subButton={{
+            text: "취소",
+            onClick: onCancelEdit,
+            isDisabled: isPutUpdateTodoPending,
+          }}
+        />
+      )}
     </section>
   );
 }
