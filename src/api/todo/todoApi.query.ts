@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getTodos, postCreateTodo } from "./todoApi";
+import { deleteTodo, getTodos, postCreateTodo } from "./todoApi";
 import { QUERY_KEY } from "@/constants/queryKeys";
 import { PostReqTodoType } from "@/types/todo.type";
 import { useNavigate } from "react-router-dom";
@@ -66,6 +66,40 @@ export const usePostCreateTodo = () => {
     mutatePostCreateTodo,
     mutateAsyncPostCreateTodo,
     isCreateTodoPending,
+    ...rest,
+  };
+};
+
+/** todo 삭제 */
+export const useDeleteTodo = () => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const {
+    mutate: mutateDeleteTodo,
+    mutateAsync: mutateAsyncDeleteTodo,
+    isPending: isDeleteTodoPending,
+    isSuccess: isDeleteTodoSuccess,
+    ...rest
+  } = useMutation({
+    mutationKey: [QUERY_KEY.TODO.DELETE_TODO],
+    mutationFn: ({ id }: { id: string }) => deleteTodo(id),
+    onSuccess() {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.TODO.GET_TODOS],
+      });
+      navigate(ROUTES.HOME, { replace: true }); // 경로 리다이렉트
+    },
+    onError(error) {
+      alert("Todo 삭제가 진행되지 않았습니다.");
+    },
+  });
+
+  return {
+    mutateDeleteTodo,
+    mutateAsyncDeleteTodo,
+    isDeleteTodoPending,
+    isDeleteTodoSuccess,
     ...rest,
   };
 };

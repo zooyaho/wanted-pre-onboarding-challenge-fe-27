@@ -10,12 +10,14 @@ import { ROUTES } from "@/constants/routes";
 interface TodoDetailSectionPropsType {
   todo: TodoType;
   deleteTodo: (todoId: string) => void;
+  isDeleteTodoPending?: boolean;
 }
 
 /** todo 읽기 section */
 export default function TodoDetailSection({
   todo,
   deleteTodo,
+  isDeleteTodoPending,
 }: TodoDetailSectionPropsType) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -43,7 +45,6 @@ export default function TodoDetailSection({
 
     deleteTodo(todo.id); // 삭제 api 호출
     closeDeleteConfirmModal(); // 모달 비활성화
-    navigate(ROUTES.HOME, { replace: true }); // 경로 리다이렉트
   };
 
   return (
@@ -86,8 +87,16 @@ export default function TodoDetailSection({
         content="Todo를 삭제 하시겠습니까?"
         isShowCloseBtn
         onClose={closeDeleteConfirmModal}
-        mainButton={{ text: "확인", onClick: onDeleteTodoConfirm }}
-        subButton={{ text: "취소", onClick: closeDeleteConfirmModal }}
+        mainButton={{
+          text: "확인",
+          onClick: onDeleteTodoConfirm,
+          disabled: isDeleteTodoPending,
+        }}
+        subButton={{
+          text: "취소",
+          onClick: closeDeleteConfirmModal,
+          isLoading: isDeleteTodoPending,
+        }}
       />
     </>
   );

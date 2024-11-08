@@ -13,7 +13,7 @@ import {
 } from "react-router-dom";
 import TodoEditSection from "@/components/todo/TodoEditSection";
 import { ROUTES } from "@/constants/routes";
-import { useGetTodos } from "@/api/todo/todoApi.query";
+import { useDeleteTodo, useGetTodos } from "@/api/todo/todoApi.query";
 
 export default function TodoPage() {
   const { id } = useParams();
@@ -22,6 +22,7 @@ export default function TodoPage() {
   const location = useLocation();
   const mode = searchParams.get("mode");
   const { todosData, refetchTodosData, isTodosFetchLoading } = useGetTodos();
+  const { mutateAsyncDeleteTodo, isDeleteTodoPending } = useDeleteTodo();
 
   const [selectedTodo, setSelectedTodo] = useState<TodoType | null>(null);
 
@@ -32,13 +33,8 @@ export default function TodoPage() {
    * - 선택한 상태 초기화
    */
   const deleteSettingTodo = async (id: string) => {
-    try {
-      await deleteTodo(id);
-      refetchTodosData();
-      setSelectedTodo(null);
-    } catch (error) {
-      alert("Todo 삭제가 진행되지 않았습니다.");
-    }
+    await mutateAsyncDeleteTodo({ id });
+    setSelectedTodo(null);
   };
 
   /** todo 수정 호출 메서드
@@ -83,7 +79,11 @@ export default function TodoPage() {
         <TodoEditSection todo={selectedTodo} updateTodo={updateSettingTodo} />
       ) : (
         // todo 상세
-        <TodoDetailSection todo={selectedTodo} deleteTodo={deleteSettingTodo} />
+        <TodoDetailSection
+          todo={selectedTodo}
+          deleteTodo={deleteSettingTodo}
+          isDeleteTodoPending={isDeleteTodoPending}
+        />
       )}
     </RootLayout>
   );
