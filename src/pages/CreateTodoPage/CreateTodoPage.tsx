@@ -1,21 +1,17 @@
-import { postCreateTodo } from "@/api/todoApi";
 import RootLayout from "@/components/layout/RootLayout";
 import TodoForm from "@/components/todo/TodoForm";
 import { useNavigate } from "react-router-dom";
 import styles from "./CreateTodoPage.module.css";
 import { ROUTES } from "@/constants/routes";
+import { usePostCreateTodo } from "@/api/todo/todoApi.query";
 
 /** todo 작성 페이지 */
 export default function CreateTodoPage() {
   const navigate = useNavigate();
+  const { mutatePostCreateTodo, isCreateTodoPending } = usePostCreateTodo();
 
   const onCreateSubmit = async (title: string, content: string) => {
-    try {
-      await postCreateTodo(title, content);
-      navigate(ROUTES.HOME); // todo list 페이지 이동
-    } catch (error) {
-      alert("todo 생성 실패. 다시 시도해주세요.");
-    }
+    mutatePostCreateTodo({ title, content });
   };
   const onCancelCreate = () => {
     navigate(ROUTES.HOME); // todo list 페이지 이동
@@ -26,9 +22,10 @@ export default function CreateTodoPage() {
       <section className={styles.section}>
         <TodoForm
           onSubmit={onCreateSubmit}
-          mainButton={{ text: "저장" }}
+          mainButton={{ text: "저장", isLoading: isCreateTodoPending }}
           subButton={{
             text: "취소",
+            isDisabled: isCreateTodoPending,
             onClick: onCancelCreate,
           }}
         />
