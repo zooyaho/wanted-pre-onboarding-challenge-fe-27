@@ -1,5 +1,5 @@
 import { API_PATHS } from "@/constants/apiPaths";
-import axiosInstance from "../axiosInstance";
+import axiosInstance from "../../api/axiosInstance";
 import { GetResTodosType, GetResTodoType } from "@/types/todo.type";
 
 /** todo 목록 */

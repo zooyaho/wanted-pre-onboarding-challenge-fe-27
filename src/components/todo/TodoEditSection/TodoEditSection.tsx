@@ -1,7 +1,7 @@
 import TodoForm from "../TodoForm";
 import styles from "./TodoEditSection.module.css";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useGetTodo } from "@/api/todo/todoApi.query";
+import { useGetTodo } from "@/features/todo/todoApi.query";
 
 interface TodoEditSectionPropsType {
   updateTodo: (title: string, content: string) => void;

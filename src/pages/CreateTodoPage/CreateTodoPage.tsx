@@ -3,7 +3,7 @@ import TodoForm from "@/components/todo/TodoForm";
 import { useNavigate } from "react-router-dom";
 import styles from "./CreateTodoPage.module.css";
 import { ROUTES } from "@/constants/routes";
-import { usePostCreateTodo } from "@/api/todo/todoApi.query";
+import { usePostCreateTodo } from "@/features/todo/todoApi.query";
 
 /** todo 작성 페이지 */
 export default function CreateTodoPage() {

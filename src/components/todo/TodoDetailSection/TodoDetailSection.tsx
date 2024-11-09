@@ -1,4 +1,4 @@
-import { useGetTodo } from "@/api/todo/todoApi.query";
+import { useGetTodo } from "@/features/todo/todoApi.query";
 import Button from "@/components/common/Button";
 import Modal from "@/components/common/Modal";
 import { formatToYYYYMMDD } from "@/utils/formatDate";
