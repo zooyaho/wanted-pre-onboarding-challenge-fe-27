@@ -23,8 +23,10 @@ export default function TodoListSection({
       </header>
 
       <ul className={styles["todo-list"]}>
-        {!todos || isTodosLoading ? (
+        {isTodosLoading ? (
           <p>...todo 목록 불러오는 중</p>
+        ) : !todos || !todos.length ? (
+          <p>todo가 없습니다.</p>
         ) : (
           todos.map((todo) => (
             <li key={todo.id}>
