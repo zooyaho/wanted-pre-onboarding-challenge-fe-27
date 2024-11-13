@@ -1,18 +1,23 @@
+import { QUERY_KEY } from "@/constants/queryKeys";
+import { ROUTES } from "@/constants/routes";
+import { RootStateType } from "@/store/store";
+import { PostCreateReqTodoType, PutUpdateReqTodoType } from "@/types/todo.type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   deleteTodo,
-  getTodos,
   getTodo,
+  getTodos,
   postCreateTodo,
   putUpdateTodo,
 } from "./todoApi";
-import { QUERY_KEY } from "@/constants/queryKeys";
-import { PostCreateReqTodoType, PutUpdateReqTodoType } from "@/types/todo.type";
-import { useLocation, useNavigate } from "react-router-dom";
-import { ROUTES } from "@/constants/routes";
 
 /** todo 목록 */
 export const useGetTodos = () => {
+  const isAuthenticated = useSelector(
+    (state: RootStateType) => state.auth.isAuthenticated
+  );
   const {
     data: todosData,
     refetch: refetchTodosData,
@@ -22,7 +27,7 @@ export const useGetTodos = () => {
   } = useQuery({
     queryKey: [QUERY_KEY.TODO.GET_TODOS],
     queryFn: () => getTodos(),
-    enabled: !!localStorage.getItem("token"), // TODO:: 인증이 완료 되었을 때 true
+    enabled: isAuthenticated,
     refetchOnMount: "always", // 무효화 시 refetch 실행
     select: (result) => {
       const { data } = result;
@@ -45,6 +50,9 @@ export const useGetTodos = () => {
 
 /** 개별 todo */
 export const useGetTodo = (id?: string) => {
+  const isAuthenticated = useSelector(
+    (state: RootStateType) => state.auth.isAuthenticated
+  );
   const {
     data: todoData,
     refetch: refetchTodoData,
@@ -54,7 +62,7 @@ export const useGetTodo = (id?: string) => {
   } = useQuery({
     queryKey: [QUERY_KEY.TODO.GET_TODO, id],
     queryFn: () => getTodo(id ?? ""),
-    enabled: !!localStorage.getItem("token") && !!id, // TODO:: 인증이 완료 되었을 때 true
+    enabled: isAuthenticated && !!id,
     refetchOnMount: "always", // 무효화 시 refetch 실행
     select: (result) => {
       const { data } = result;

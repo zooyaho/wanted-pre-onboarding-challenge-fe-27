@@ -4,10 +4,13 @@ import { Link, useNavigate } from "react-router-dom";
 import Modal from "@/components/common/Modal";
 import { useState } from "react";
 import { ROUTES } from "@/constants/routes";
+import { useDispatch } from "react-redux";
+import { removeToken } from "@/features/auth/authSlice";
 
 export default function Header() {
   const navigate = useNavigate();
   const [isShowLogoutModal, setIsShowLogoutModal] = useState(false);
+  const dispatch = useDispatch();
 
   /** 로그아웃 버튼 클릭 이벤트 메서드 */
   const onLogoutBtnClick = () => {
@@ -17,7 +20,7 @@ export default function Header() {
   /** 로그아웃 컨펌 모달의 확인 버튼 클릭 메서드 */
   const onConfirmLogout = () => {
     // 확인 시 토큰 삭제 후 로그인 페이지 리다이렉트
-    localStorage.removeItem("token");
+    dispatch(removeToken());
     navigate(ROUTES.AUTH.LOGIN);
   };
 
