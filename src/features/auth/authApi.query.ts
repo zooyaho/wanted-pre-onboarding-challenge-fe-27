@@ -5,6 +5,8 @@ import { postLogin, postSignUp } from "./authApi";
 import { AxiosError } from "axios";
 import { ROUTES } from "@/constants/routes";
 import { UserType } from "@/types/user.type";
+import { useDispatch } from "react-redux";
+import { setToken } from "./authSlice";
 
 /**
  * - 로그인 요청
@@ -13,6 +15,7 @@ import { UserType } from "@/types/user.type";
  */
 export const usePostLogin = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const {
     mutate: mutatePostLogin,
@@ -23,7 +26,7 @@ export const usePostLogin = () => {
     mutationFn: (reqBody: UserType) =>
       postLogin(reqBody.email, reqBody.password),
     onSuccess(data) {
-      localStorage.setItem("token", data.token);
+      dispatch(setToken(data.token));
       alert(data.message);
       navigate(ROUTES.HOME);
     },

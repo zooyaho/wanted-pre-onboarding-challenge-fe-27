@@ -1,5 +1,5 @@
 import { API_PATHS } from "@/constants/apiPaths";
-import axiosInstance from "../axiosInstance";
+import axiosInstance from "@/api/axiosInstance";
 
 export const postLogin = async (email: string, password: string) => {
   const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {

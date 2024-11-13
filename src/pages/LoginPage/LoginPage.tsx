@@ -1,9 +1,10 @@
 import AuthForm from "@/components/auth/AuthForm";
-import styles from "./LoginPage.module.css";
-import { Link, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import { ROUTES } from "@/constants/routes";
-import { usePostLogin } from "@/api/auth/authApi.query";
+import { usePostLogin } from "@/features/auth/authApi.query";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import styles from "./LoginPage.module.css";
+import store from "@/store/store";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ export default function LoginPage() {
 
   // 컴포넌트가 렌더링될 때 토큰 확인하여 리다이렉트
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = store.getState().auth.token;
 
     if (token) {
       // 토큰이 있으면 루트경로로 리다이렉트

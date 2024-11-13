@@ -1,5 +1,7 @@
 import { API_BASE_URL } from "@/constants/apiPaths";
 import { ROUTES } from "@/constants/routes";
+import { removeToken } from "@/features/auth/authSlice";
+import store from "@/store/store";
 import axios from "axios";
 
 const axiosInstance = axios.create({
@@ -11,7 +13,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = store.getState().auth.token;
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -25,7 +27,7 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      localStorage.removeItem("token");
+      store.dispatch(removeToken());
       alert("토큰이 유효하지 않습니다. 다시 로그인해주세요.");
 
       window.location.href = ROUTES.AUTH.LOGIN; // 로그인 페이지로 리다이렉트
