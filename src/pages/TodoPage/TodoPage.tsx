@@ -13,6 +13,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import styles from "./TodoPage.module.css";
+import TodoLabel from "@/components/todo/TodoLabel";
 
 export default function TodoPage() {
   const { id } = useParams();

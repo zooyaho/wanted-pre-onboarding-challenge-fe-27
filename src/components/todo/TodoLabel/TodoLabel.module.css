@@ -1,0 +1,20 @@
+.label-wrapper {
+  border-radius: 20%;
+  padding: 8px;
+  height: fit-content;
+}
+
+.label-wrapper.urgent {
+  background-color: rgb(255, 83, 83);
+}
+.label-wrapper.normal {
+  background-color: rgb(0, 197, 92);
+}
+.label-wrapper.low {
+  background-color: rgb(102, 102, 102);
+}
+
+.label {
+  color: white;
+  font-size: 12px;
+}
