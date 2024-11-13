@@ -5,6 +5,7 @@ import TodoPage from "@/pages/TodoPage";
 import CreateTodoPage from "@/pages/CreateTodoPage";
 import { ROUTES } from "@/constants/routes";
 import PrivateRoute from "./PrivateRoute";
+import NotFoundPage from "@/pages/NotFoundPage";
 
 export default function AppRoutes() {
   return (
@@ -27,6 +28,9 @@ export default function AppRoutes() {
           {/* Todo 작성 페이지 */}
           <Route path={ROUTES.TODO_CREATE} element={<CreateTodoPage />} />
         </Route>
+
+        {/* 404 페이지 */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
   );
