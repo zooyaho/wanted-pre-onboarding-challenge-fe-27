@@ -2,7 +2,7 @@ import {
   useDeleteTodo,
   useGetTodos,
   useUpdateTodo,
-} from "@/api/todo/todoApi.query";
+} from "@/features/todo/todoApi.query";
 import RootLayout from "@/components/layout/RootLayout";
 import TodoDetailSection from "@/components/todo/TodoDetailSection";
 import TodoEditSection from "@/components/todo/TodoEditSection";

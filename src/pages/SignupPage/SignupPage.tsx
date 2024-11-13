@@ -1,6 +1,6 @@
 import AuthForm from "@/components/auth/AuthForm";
 import styles from "./SignupPage.module.css";
-import { usePostSignUp } from "@/api/auth/authApi.query";
+import { usePostSignUp } from "@/features/auth/authApi.query";
 
 export default function SingupPage() {
   const { mutatePostSignUp, isPending } = usePostSignUp();
