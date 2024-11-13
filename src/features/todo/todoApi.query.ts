@@ -1,20 +1,23 @@
+import { QUERY_KEY } from "@/constants/queryKeys";
+import { ROUTES } from "@/constants/routes";
+import { RootStateType } from "@/store/store";
+import { PostCreateReqTodoType, PutUpdateReqTodoType } from "@/types/todo.type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   deleteTodo,
-  getTodos,
   getTodo,
+  getTodos,
   postCreateTodo,
   putUpdateTodo,
 } from "./todoApi";
-import { QUERY_KEY } from "@/constants/queryKeys";
-import { PostCreateReqTodoType, PutUpdateReqTodoType } from "@/types/todo.type";
-import { useLocation, useNavigate } from "react-router-dom";
-import { ROUTES } from "@/constants/routes";
-import store from "@/store/store";
 
 /** todo 목록 */
 export const useGetTodos = () => {
-  const isAuthenticated = store.getState().auth.isAuthenticated;
+  const isAuthenticated = useSelector(
+    (state: RootStateType) => state.auth.isAuthenticated
+  );
   const {
     data: todosData,
     refetch: refetchTodosData,
@@ -47,7 +50,9 @@ export const useGetTodos = () => {
 
 /** 개별 todo */
 export const useGetTodo = (id?: string) => {
-  const isAuthenticated = store.getState().auth.isAuthenticated;
+  const isAuthenticated = useSelector(
+    (state: RootStateType) => state.auth.isAuthenticated
+  );
   const {
     data: todoData,
     refetch: refetchTodoData,
