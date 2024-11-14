@@ -4,7 +4,7 @@ import { RootStateType } from "@/store/store";
 import { PostCreateReqTodoType, PutUpdateReqTodoType } from "@/types/todo.type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import {
   deleteTodo,
   getTodo,
@@ -153,6 +153,8 @@ export const useDeleteTodo = () => {
 /** todo 수정 */
 export const useUpdateTodo = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
   const location = useLocation();
   const queryClient = useQueryClient();
 
@@ -175,7 +177,7 @@ export const useUpdateTodo = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.TODO.GET_TODOS],
       });
-      navigate(location.pathname);
+      navigate(`${location.pathname}?id=${id}`);
     },
     onError(error) {
       alert("Todo 수정이 진행되지 않았습니다.");

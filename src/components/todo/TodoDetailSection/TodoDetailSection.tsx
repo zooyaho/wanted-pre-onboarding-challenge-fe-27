@@ -1,11 +1,11 @@
-import { useGetTodo } from "@/features/todo/todoApi.query";
 import Button from "@/components/common/Button";
 import Modal from "@/components/common/Modal";
+import { useGetTodo } from "@/features/todo/todoApi.query";
 import { formatToYYYYMMDD } from "@/utils/formatDate";
 import { useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import styles from "./TodoDetailSection.module.css";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import TodoLabel from "../TodoLabel";
+import styles from "./TodoDetailSection.module.css";
 
 interface TodoDetailSectionPropsType {
   deleteTodo: (todoId: string) => void;
@@ -19,7 +19,8 @@ export default function TodoDetailSection({
 }: TodoDetailSectionPropsType) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
   const { todoData, isTodoFetchLoading } = useGetTodo(id ?? undefined);
   const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
 
@@ -31,7 +32,7 @@ export default function TodoDetailSection({
   /** 수정 버튼 클릭 이벤트 메서드 */
   const onEditBtnClick = () => {
     // 수정관련 쿼리 스트링 추가
-    navigate(`${location.pathname}?mode=edit`);
+    navigate(`${location.pathname}${location.search}&mode=edit`);
   };
 
   /** 모달 비활성화 메서드 */

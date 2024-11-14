@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom";
-import styles from "./TodoListSection.module.css";
 import Button from "@/components/common/Button";
 import { TodoListType } from "@/types/todo.type";
 import { formatToYYYYMMDD } from "@/utils/formatDate";
+import { Link } from "react-router-dom";
 import TodoLabel from "../TodoLabel";
+import styles from "./TodoListSection.module.css";
 
 interface TodoListSectionPropsType {
   todos?: TodoListType;
@@ -31,7 +31,7 @@ export default function TodoListSection({
         ) : (
           todos.map((todo) => (
             <li key={todo.id}>
-              <Link to={`/${todo.id}`} className={`${styles["todo-item"]}`}>
+              <Link to={`?id=${todo.id}`} className={`${styles["todo-item"]}`}>
                 <p className={styles["todo-title"]}>{todo.title}</p>
                 <TodoLabel priority={todo.priority} />
                 <span className={styles["todo-last-update"]}>
