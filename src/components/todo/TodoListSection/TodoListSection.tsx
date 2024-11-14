@@ -3,6 +3,7 @@ import styles from "./TodoListSection.module.css";
 import Button from "@/components/common/Button";
 import { TodoListType } from "@/types/todo.type";
 import { formatToYYYYMMDD } from "@/utils/formatDate";
+import TodoLabel from "../TodoLabel";
 
 interface TodoListSectionPropsType {
   todos?: TodoListType;
@@ -32,6 +33,7 @@ export default function TodoListSection({
             <li key={todo.id}>
               <Link to={`/${todo.id}`} className={`${styles["todo-item"]}`}>
                 <p className={styles["todo-title"]}>{todo.title}</p>
+                <TodoLabel priority={todo.priority} />
                 <span className={styles["todo-last-update"]}>
                   {formatToYYYYMMDD(todo.updatedAt)}
                 </span>

@@ -96,7 +96,7 @@ export const usePostCreateTodo = () => {
   } = useMutation({
     mutationKey: [QUERY_KEY.TODO.POST_CREATE_TODO],
     mutationFn: (newTodo: PostCreateReqTodoType) =>
-      postCreateTodo(newTodo.title, newTodo.content),
+      postCreateTodo(newTodo.title, newTodo.content, newTodo.priority),
     onSuccess() {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.TODO.GET_TODOS],
@@ -165,7 +165,12 @@ export const useUpdateTodo = () => {
   } = useMutation({
     mutationKey: [QUERY_KEY.TODO.PUT_UPDATE_TODO],
     mutationFn: (reqParams: PutUpdateReqTodoType) =>
-      putUpdateTodo(reqParams.id, reqParams.title, reqParams.content),
+      putUpdateTodo(
+        reqParams.id,
+        reqParams.title,
+        reqParams.content,
+        reqParams.priority
+      ),
     onSuccess() {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.TODO.GET_TODOS],

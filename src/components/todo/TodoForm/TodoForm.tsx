@@ -4,11 +4,18 @@ import Label from "@/components/common/Label";
 import Input from "@/components/common/Input";
 import Textarea from "@/components/common/Textarea";
 import { useState } from "react";
+import PRIORITY from "@/constants/todoPriority";
+import { TodoPriorityType } from "@/types/todo.type";
 
 interface TodoFormPropsType {
   defaultTitle?: string;
   defaultContent?: string;
-  onSubmit: (titleValue: string, contentValue: string) => void;
+  defaultPriority?: TodoPriorityType;
+  onSubmit: (
+    titleValue: string,
+    contentValue: string,
+    priority: TodoPriorityType
+  ) => void;
   mainButton: {
     syleType?: "primary" | "secondary";
     text: string;
@@ -28,12 +35,15 @@ interface TodoFormPropsType {
 export default function TodoForm({
   defaultTitle = "",
   defaultContent = "",
+  defaultPriority = PRIORITY.NORMAL,
   onSubmit,
   mainButton,
   subButton,
 }: TodoFormPropsType) {
   const [titleValue, setTitleValue] = useState(defaultTitle);
   const [contentValue, setContentValue] = useState(defaultContent);
+  const [selectedPriorityValue, setSelectedPriorityValue] =
+    useState<TodoPriorityType>(defaultPriority);
 
   const onTitleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
@@ -47,9 +57,16 @@ export default function TodoForm({
     setContentValue(newValue);
   };
 
+  const onSelectedPriorityChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const newValue = event.target.value as TodoPriorityType;
+    setSelectedPriorityValue(newValue);
+  };
+
   const onTodoSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onSubmit(titleValue, contentValue);
+    onSubmit(titleValue, contentValue, selectedPriorityValue);
   };
 
   return (
@@ -77,6 +94,38 @@ export default function TodoForm({
       </header>
 
       <div className={styles["field-container"]}>
+        <div className={`${styles["field-wrapper"]} ${styles["radio-field"]}`}>
+          <label>
+            <input
+              type="radio"
+              name="priority"
+              value={PRIORITY.URGENT}
+              checked={selectedPriorityValue === PRIORITY.URGENT}
+              onChange={onSelectedPriorityChange}
+            />
+            Urgent
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="priority"
+              value={PRIORITY.NORMAL}
+              checked={selectedPriorityValue === PRIORITY.NORMAL}
+              onChange={onSelectedPriorityChange}
+            />
+            Normal
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="priority"
+              value={PRIORITY.LOW}
+              checked={selectedPriorityValue === PRIORITY.LOW}
+              onChange={onSelectedPriorityChange}
+            />
+            Low
+          </label>
+        </div>
         {/* title */}
         <div className={styles["field-wrapper"]}>
           <Label text="Title" isRequired htmlFor="title" />

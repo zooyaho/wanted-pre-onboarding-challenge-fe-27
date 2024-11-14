@@ -5,6 +5,7 @@ import { formatToYYYYMMDD } from "@/utils/formatDate";
 import { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styles from "./TodoDetailSection.module.css";
+import TodoLabel from "../TodoLabel";
 
 interface TodoDetailSectionPropsType {
   deleteTodo: (todoId: string) => void;
@@ -67,6 +68,7 @@ export default function TodoDetailSection({
             <p>todo 불러오는 중</p>
           ) : (
             <>
+              <TodoLabel priority={todoData.priority} />
               <h3 className={styles.title}>{todoData.title}</h3>
               <div className={styles["date-container"]}>
                 <div className={styles["date-wrapper"]}>
