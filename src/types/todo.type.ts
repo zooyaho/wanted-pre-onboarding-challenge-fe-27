@@ -25,4 +25,7 @@ export type PostCreateReqTodoType = Pick<
   "title" | "content" | "priority"
 >;
 
-export type PutUpdateReqTodoType = Pick<TodoType, "id" | "title" | "content">;
+export type PutUpdateReqTodoType = Pick<
+  TodoType,
+  "id" | "title" | "content" | "priority"
+>;

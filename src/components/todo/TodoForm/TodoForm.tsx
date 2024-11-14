@@ -10,6 +10,7 @@ import { TodoPriorityType } from "@/types/todo.type";
 interface TodoFormPropsType {
   defaultTitle?: string;
   defaultContent?: string;
+  defaultPriority?: TodoPriorityType;
   onSubmit: (
     titleValue: string,
     contentValue: string,
@@ -34,6 +35,7 @@ interface TodoFormPropsType {
 export default function TodoForm({
   defaultTitle = "",
   defaultContent = "",
+  defaultPriority = PRIORITY.NORMAL,
   onSubmit,
   mainButton,
   subButton,
@@ -41,7 +43,7 @@ export default function TodoForm({
   const [titleValue, setTitleValue] = useState(defaultTitle);
   const [contentValue, setContentValue] = useState(defaultContent);
   const [selectedPriorityValue, setSelectedPriorityValue] =
-    useState<TodoPriorityType>(PRIORITY.NORMAL);
+    useState<TodoPriorityType>(defaultPriority);
 
   const onTitleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;

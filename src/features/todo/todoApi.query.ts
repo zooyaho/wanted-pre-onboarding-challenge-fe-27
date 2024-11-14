@@ -165,7 +165,12 @@ export const useUpdateTodo = () => {
   } = useMutation({
     mutationKey: [QUERY_KEY.TODO.PUT_UPDATE_TODO],
     mutationFn: (reqParams: PutUpdateReqTodoType) =>
-      putUpdateTodo(reqParams.id, reqParams.title, reqParams.content),
+      putUpdateTodo(
+        reqParams.id,
+        reqParams.title,
+        reqParams.content,
+        reqParams.priority
+      ),
     onSuccess() {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.TODO.GET_TODOS],

@@ -42,11 +42,13 @@ export const deleteTodo = async (id: string) => {
 export const putUpdateTodo = async (
   id: string,
   title: string,
-  content: string
+  content: string,
+  priority: TodoPriorityType
 ) => {
   const response = await axiosInstance.put(`${API_PATHS.TODOS}/${id}`, {
     title,
     content,
+    priority,
   });
   return response.data;
 };

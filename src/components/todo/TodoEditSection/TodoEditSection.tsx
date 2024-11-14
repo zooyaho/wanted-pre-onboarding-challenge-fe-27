@@ -2,9 +2,15 @@ import TodoForm from "../TodoForm";
 import styles from "./TodoEditSection.module.css";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useGetTodo } from "@/features/todo/todoApi.query";
+import { TodoPriorityType } from "@/types/todo.type";
+import PRIORITY from "@/constants/todoPriority";
 
 interface TodoEditSectionPropsType {
-  updateTodo: (title: string, content: string) => void;
+  updateTodo: (
+    title: string,
+    content: string,
+    priority: TodoPriorityType
+  ) => void;
   isPutUpdateTodoPending?: boolean;
 }
 
@@ -23,8 +29,12 @@ export default function TodoEditSection({
   };
 
   /** 수정 완료 버튼 클릭 메서드 */
-  const onUpdateSubmit = (titleValue: string, contentValue: string) => {
-    updateTodo(titleValue, contentValue);
+  const onUpdateSubmit = (
+    titleValue: string,
+    contentValue: string,
+    priority: TodoPriorityType
+  ) => {
+    updateTodo(titleValue, contentValue, priority);
   };
 
   return (
@@ -35,6 +45,7 @@ export default function TodoEditSection({
         <TodoForm
           defaultTitle={todoData?.title || ""}
           defaultContent={todoData?.content || ""}
+          defaultPriority={todoData?.priority || PRIORITY.NORMAL}
           onSubmit={onUpdateSubmit}
           mainButton={{ text: "완료", isLoading: isPutUpdateTodoPending }}
           subButton={{
