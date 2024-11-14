@@ -2,6 +2,7 @@ import Button from "@/components/common/Button";
 import { TodoListType } from "@/types/todo.type";
 import { formatToYYYYMMDD } from "@/utils/formatDate";
 import { Link } from "react-router-dom";
+import TodoFiltering from "../TodoFiltering";
 import TodoLabel from "../TodoLabel";
 import styles from "./TodoListSection.module.css";
 
@@ -18,6 +19,7 @@ export default function TodoListSection({
   return (
     <section className={styles.section}>
       <header className={styles.header}>
+        <TodoFiltering />
         <Link to="/create">
           <Button text="추가" style={{ width: "80px" }} />
         </Link>

@@ -12,6 +12,7 @@ interface DropdownPropsType<T> {
   onSelect: (value: T | null) => void;
   defaultOption?: OptionType<T>;
   placeholder: string;
+  width?: string;
 }
 
 export default function Dropdown<T>({
@@ -19,6 +20,7 @@ export default function Dropdown<T>({
   onSelect,
   defaultOption,
   placeholder,
+  width,
 }: DropdownPropsType<T>) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [selectedOption, setSelectedOption] = useState<OptionType<T> | null>(
@@ -60,7 +62,11 @@ export default function Dropdown<T>({
   }, []);
 
   return (
-    <div className={styles["dropdown-container"]} ref={dropdownRef}>
+    <div
+      className={styles["dropdown-container"]}
+      ref={dropdownRef}
+      style={{ width }}
+    >
       <div
         className={`${styles["select-option"]} ${
           isShowOption && styles["focus"]
@@ -75,9 +81,11 @@ export default function Dropdown<T>({
           {selectedOption?.label || placeholder}
         </p>
         {/* 선택 취소 버튼 */}
-        <button type="button" onClick={onCancelSelectOption}>
-          <IoClose />
-        </button>
+        {selectedOption && (
+          <button type="button" onClick={onCancelSelectOption}>
+            <IoClose />
+          </button>
+        )}
       </div>
       <ul
         className={`${styles["option-list"]} ${
