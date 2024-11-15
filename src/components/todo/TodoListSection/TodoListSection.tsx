@@ -2,7 +2,7 @@ import Button from "@/components/common/Button";
 import { TodoListType } from "@/types/todo.type";
 import { formatToYYYYMMDD } from "@/utils/formatDate";
 import { Link } from "react-router-dom";
-import TodoFiltering from "../TodoFiltering";
+import TodoFiltering from "../TodoFilter";
 import TodoLabel from "../TodoLabel";
 import styles from "./TodoListSection.module.css";
 

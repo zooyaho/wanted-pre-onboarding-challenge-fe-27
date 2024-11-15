@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { IoClose } from "react-icons/io5";
+import { IoCloseCircleOutline } from "react-icons/io5";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import styles from "./Dropdown.module.css";
 
 type OptionType<T> = {
@@ -83,9 +84,10 @@ export default function Dropdown<T>({
         {/* 선택 취소 버튼 */}
         {selectedOption && (
           <button type="button" onClick={onCancelSelectOption}>
-            <IoClose />
+            <IoCloseCircleOutline />
           </button>
         )}
+        {isShowOption ? <IoIosArrowUp /> : <IoIosArrowDown />}
       </div>
       <ul
         className={`${styles["option-list"]} ${
