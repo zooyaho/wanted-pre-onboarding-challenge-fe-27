@@ -7,49 +7,21 @@ import {
   SortOptionValueType,
 } from "./TodoFilter.type";
 import { useSearchParams } from "react-router-dom";
+import updateSearchParams from "@/utils/updateSearchParams";
 
 export default function TodoFilter() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  /* 정렬 드롭다운 선택 메서드 */
-  const onSelectSortDropdown = (value: SortOptionValueType | null) => {
-    console.log("정렬 드롭다운 >> ", value);
+  /* 드롭다운 선택 메서드 */
+  const onSelectDropdown = (
+    value: SortOptionValueType | PriorityOptionValueType | null
+  ) => {
+    const updatedParams = updateSearchParams(
+      value as Record<string, string> | null,
+      searchParams
+    );
 
-    const newSearchParams = new URLSearchParams(searchParams); // 기존 값 유지
-
-    if (value) {
-      Object.entries(value).forEach(([key, value]) => {
-        newSearchParams.set(key, value.toString());
-      });
-      console.log("[정렬] newSearchParams >> ", newSearchParams.toString());
-    } else {
-      newSearchParams.delete("order");
-      newSearchParams.delete("sort");
-    }
-
-    setSearchParams(newSearchParams, {
-      replace: true,
-    });
-  };
-
-  /* 우선순위 드롭다운 선택 메서드 */
-  const onSelectPriorityDropdown = (value: PriorityOptionValueType | null) => {
-    console.log("우선순위 >> ", value);
-
-    const newSearchParams = new URLSearchParams(searchParams); // 기존 값 유지
-
-    if (value) {
-      Object.entries(value).forEach(([key, value]) => {
-        newSearchParams.set(key, value.toString());
-      });
-      console.log("[우선순위] newSearchParams >> ", newSearchParams.toString());
-    } else {
-      newSearchParams.delete("priority");
-    }
-
-    setSearchParams(newSearchParams, {
-      replace: true,
-    });
+    setSearchParams(updatedParams, { replace: true });
   };
 
   /* 검색 인풋 */
@@ -58,20 +30,11 @@ export default function TodoFilter() {
   ) => {
     if (event.key === "Enter") {
       const keyword = (event.target as HTMLInputElement).value.trim();
+      const kewordParams = keyword ? { keyword } : null;
 
-      const newSearchParams = new URLSearchParams(searchParams); // 기존 값 유지
+      const updatedParams = updateSearchParams(kewordParams, searchParams);
 
-      if (keyword) {
-        newSearchParams.set("keyword", keyword.toString());
-        console.log(
-          "[우선순위] newSearchParams >> ",
-          newSearchParams.toString()
-        );
-      } else {
-        newSearchParams.delete("keyword");
-      }
-
-      setSearchParams(newSearchParams, {
+      setSearchParams(updatedParams, {
         replace: true,
       });
     }
@@ -84,14 +47,14 @@ export default function TodoFilter() {
         width="160px"
         options={sortOptions}
         placeholder="정렬"
-        onSelect={onSelectSortDropdown}
+        onSelect={onSelectDropdown}
       />
       {/* 정렬 드롭다운 */}
       <Dropdown
         width="120px"
         options={priorityOptions}
         placeholder="우선순위"
-        onSelect={onSelectPriorityDropdown}
+        onSelect={onSelectDropdown}
       />
       <Input placeholder="키워드 검색" onKeyDown={onKeywordInputEnter} />
     </div>
