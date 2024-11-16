@@ -12,12 +12,22 @@ import updateSearchParams from "@/utils/updateSearchParams";
 export default function TodoFilter() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  /* 드롭다운 선택 메서드 */
-  const onSelectDropdown = (
-    value: SortOptionValueType | PriorityOptionValueType | null
-  ) => {
+  /* 정렬 드롭다운 선택 메서드 */
+  const onSelectSortDropdown = (value: SortOptionValueType | null) => {
     const updatedParams = updateSearchParams(
       value as Record<string, string> | null,
+      ["sort", "order"],
+      searchParams
+    );
+
+    setSearchParams(updatedParams, { replace: true });
+  };
+
+  /* 우선순위 드롭다운 선택 메서드 */
+  const onSelectPriorityDropdown = (value: PriorityOptionValueType | null) => {
+    const updatedParams = updateSearchParams(
+      value as Record<string, string> | null,
+      ["priority"],
       searchParams
     );
 
@@ -32,7 +42,11 @@ export default function TodoFilter() {
       const keyword = (event.target as HTMLInputElement).value.trim();
       const kewordParams = keyword ? { keyword } : null;
 
-      const updatedParams = updateSearchParams(kewordParams, searchParams);
+      const updatedParams = updateSearchParams(
+        kewordParams,
+        ["keyword"],
+        searchParams
+      );
 
       setSearchParams(updatedParams, {
         replace: true,
@@ -47,14 +61,14 @@ export default function TodoFilter() {
         width="160px"
         options={sortOptions}
         placeholder="정렬"
-        onSelect={onSelectDropdown}
+        onSelect={onSelectSortDropdown}
       />
       {/* 정렬 드롭다운 */}
       <Dropdown
         width="120px"
         options={priorityOptions}
         placeholder="우선순위"
-        onSelect={onSelectDropdown}
+        onSelect={onSelectPriorityDropdown}
       />
       <Input placeholder="키워드 검색" onKeyDown={onKeywordInputEnter} />
     </div>
