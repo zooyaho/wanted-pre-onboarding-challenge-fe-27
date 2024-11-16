@@ -1,7 +1,8 @@
 import PRIORITY from "@/constants/todoPriority";
 import { useGetTodo } from "@/features/todo/todoApi.query";
 import { TodoPriorityType } from "@/types/todo.type";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import updateSearchParams from "@/utils/updateSearchParams";
+import { useSearchParams } from "react-router-dom";
 import TodoForm from "../TodoForm";
 import styles from "./TodoEditSection.module.css";
 
@@ -18,15 +19,14 @@ export default function TodoEditSection({
   updateTodo,
   isPutUpdateTodoPending,
 }: TodoEditSectionPropsType) {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
   const { todoData, isTodoFetchLoading } = useGetTodo(id ?? undefined);
 
   /** 수정 취소 버튼 클릭 메서드 */
   const onCancelEdit = () => {
-    navigate(`${location.pathname}?id=${id}`);
+    const updateParams = updateSearchParams(null, ["mode"], searchParams);
+    setSearchParams(updateParams);
   };
 
   /** 수정 완료 버튼 클릭 메서드 */
