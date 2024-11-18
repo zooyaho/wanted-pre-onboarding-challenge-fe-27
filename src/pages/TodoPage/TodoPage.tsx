@@ -16,11 +16,11 @@ import styles from "./TodoPage.module.css";
 import { TodoPriorityType } from "@/types/todo.type";
 
 export default function TodoPage() {
-  const { id } = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const mode = searchParams.get("mode");
+  const id = searchParams.get("id");
   const { todosData, isTodosFetchLoading } = useGetTodos();
   const { mutateAsyncDeleteTodo, isDeleteTodoPending } = useDeleteTodo();
   const { mutateAsyncPutUpdateTodo } = useUpdateTodo();

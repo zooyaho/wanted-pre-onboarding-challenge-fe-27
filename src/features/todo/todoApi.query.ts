@@ -2,9 +2,10 @@ import { QUERY_KEY } from "@/constants/queryKeys";
 import { ROUTES } from "@/constants/routes";
 import { RootStateType } from "@/store/store";
 import { PostCreateReqTodoType, PutUpdateReqTodoType } from "@/types/todo.type";
+import updateSearchParams from "@/utils/updateSearchParams";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   deleteTodo,
   getTodo,
@@ -12,12 +13,18 @@ import {
   postCreateTodo,
   putUpdateTodo,
 } from "./todoApi";
+import parseQueryStringToObject from "@/utils/parseQueryStringToObject";
 
 /** todo 목록 */
 export const useGetTodos = () => {
   const isAuthenticated = useSelector(
     (state: RootStateType) => state.auth.isAuthenticated
   );
+  const [searchParams] = useSearchParams();
+  const queryStringObj = parseQueryStringToObject(searchParams.toString());
+
+  if (queryStringObj?.id) delete queryStringObj.id;
+
   const {
     data: todosData,
     refetch: refetchTodosData,
@@ -25,8 +32,11 @@ export const useGetTodos = () => {
     isLoading: isTodosFetchLoading,
     ...rest
   } = useQuery({
-    queryKey: [QUERY_KEY.TODO.GET_TODOS],
-    queryFn: () => getTodos(),
+    queryKey: [
+      QUERY_KEY.TODO.GET_TODOS,
+      searchParams && searchParams.toString(),
+    ],
+    queryFn: () => getTodos(queryStringObj),
     enabled: isAuthenticated,
     refetchOnMount: "always", // 무효화 시 refetch 실행
     select: (result) => {
@@ -118,8 +128,8 @@ export const usePostCreateTodo = () => {
 
 /** todo 삭제 */
 export const useDeleteTodo = () => {
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const {
     mutate: mutateDeleteTodo,
@@ -134,7 +144,8 @@ export const useDeleteTodo = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.TODO.GET_TODOS],
       });
-      navigate(ROUTES.HOME, { replace: true }); // 경로 리다이렉트
+      const updateParams = updateSearchParams(null, ["id"], searchParams);
+      setSearchParams(updateParams);
     },
     onError(error) {
       alert("Todo 삭제가 진행되지 않았습니다.");
@@ -152,8 +163,7 @@ export const useDeleteTodo = () => {
 
 /** todo 수정 */
 export const useUpdateTodo = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const queryClient = useQueryClient();
 
   const {
@@ -175,7 +185,8 @@ export const useUpdateTodo = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.TODO.GET_TODOS],
       });
-      navigate(location.pathname);
+      const updateParams = updateSearchParams(null, ["mode"], searchParams);
+      setSearchParams(updateParams);
     },
     onError(error) {
       alert("Todo 수정이 진행되지 않았습니다.");

@@ -3,12 +3,15 @@ import axiosInstance from "../../api/axiosInstance";
 import {
   GetResTodosType,
   GetResTodoType,
+  GetTodosParamsType,
   TodoPriorityType,
 } from "@/types/todo.type";
 
 /** todo 목록 */
-export const getTodos = async (): Promise<GetResTodosType> => {
-  const response = await axiosInstance.get(API_PATHS.TODOS);
+export const getTodos = async (
+  params?: GetTodosParamsType
+): Promise<GetResTodosType> => {
+  const response = await axiosInstance.get(API_PATHS.TODOS, { params });
   return response.data;
 };
 
