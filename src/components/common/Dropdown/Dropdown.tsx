@@ -3,7 +3,7 @@ import { IoCloseCircleOutline } from "react-icons/io5";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import styles from "./Dropdown.module.css";
 
-type OptionType<T> = {
+export type OptionType<T> = {
   label: string;
   value: T;
 };
@@ -12,6 +12,7 @@ interface DropdownPropsType<T> {
   options: OptionType<T>[];
   onSelect: (value: T | null) => void;
   defaultOption?: OptionType<T>;
+  defaultSelectedOption?: OptionType<T>;
   placeholder: string;
   width?: string;
 }
@@ -20,12 +21,13 @@ export default function Dropdown<T>({
   options,
   onSelect,
   defaultOption,
+  defaultSelectedOption,
   placeholder,
   width,
 }: DropdownPropsType<T>) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [selectedOption, setSelectedOption] = useState<OptionType<T> | null>(
-    defaultOption || null
+    defaultSelectedOption || defaultOption || null
   );
   const [isShowOption, setIsShowOption] = useState<boolean>(false);
 
