@@ -1,10 +1,17 @@
 import { API_PATHS } from "@/constants/apiPaths";
 import axiosInstance from "../../api/axiosInstance";
-import { GetResTodosType, GetResTodoType } from "@/types/todo.type";
+import {
+  GetResTodosType,
+  GetResTodoType,
+  GetTodosParamsType,
+  TodoPriorityType,
+} from "@/types/todo.type";
 
 /** todo 목록 */
-export const getTodos = async (): Promise<GetResTodosType> => {
-  const response = await axiosInstance.get(API_PATHS.TODOS);
+export const getTodos = async (
+  params?: GetTodosParamsType
+): Promise<GetResTodosType> => {
+  const response = await axiosInstance.get(API_PATHS.TODOS, { params });
   return response.data;
 };
 
@@ -15,10 +22,15 @@ export const getTodo = async (id: string): Promise<GetResTodoType> => {
 };
 
 /** todo 생성 */
-export const postCreateTodo = async (title: string, content: string) => {
+export const postCreateTodo = async (
+  title: string,
+  content: string,
+  priority: TodoPriorityType
+) => {
   const response = await axiosInstance.post(API_PATHS.TODOS, {
     title,
     content,
+    priority,
   });
   return response.data;
 };
@@ -33,11 +45,13 @@ export const deleteTodo = async (id: string) => {
 export const putUpdateTodo = async (
   id: string,
   title: string,
-  content: string
+  content: string,
+  priority: TodoPriorityType
 ) => {
   const response = await axiosInstance.put(`${API_PATHS.TODOS}/${id}`, {
     title,
     content,
+    priority,
   });
   return response.data;
 };

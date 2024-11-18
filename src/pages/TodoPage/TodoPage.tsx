@@ -13,13 +13,14 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import styles from "./TodoPage.module.css";
+import { TodoPriorityType } from "@/types/todo.type";
 
 export default function TodoPage() {
-  const { id } = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const mode = searchParams.get("mode");
+  const id = searchParams.get("id");
   const { todosData, isTodosFetchLoading } = useGetTodos();
   const { mutateAsyncDeleteTodo, isDeleteTodoPending } = useDeleteTodo();
   const { mutateAsyncPutUpdateTodo } = useUpdateTodo();
@@ -40,13 +41,17 @@ export default function TodoPage() {
    * - 수정 후 todo 목록 호출
    * - edit mode 취소
    */
-  const updateSettingTodo = async (title: string, content: string) => {
+  const updateSettingTodo = async (
+    title: string,
+    content: string,
+    priority: TodoPriorityType
+  ) => {
     if (!id) {
       navigate(ROUTES.HOME); // id없을 경우 루트경로로 리다이렉트
       return;
     }
     await mutateAsyncPutUpdateTodo(
-      { id, title, content },
+      { id, title, content, priority },
       {
         onSuccess() {
           queryClient.invalidateQueries({

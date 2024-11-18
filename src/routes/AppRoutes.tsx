@@ -22,9 +22,6 @@ export default function AppRoutes() {
           {/* 루트 - Todo 목록 페이지 */}
           <Route path={ROUTES.HOME} element={<TodoPage />} />
 
-          {/* Todo 상세 페이지 */}
-          <Route path={ROUTES.TODO_DETAIL()} element={<TodoPage />} />
-
           {/* Todo 작성 페이지 */}
           <Route path={ROUTES.TODO_CREATE} element={<CreateTodoPage />} />
         </Route>
