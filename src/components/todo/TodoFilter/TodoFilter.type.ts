@@ -1,11 +1,18 @@
-import { ORDER_KEYS, SORT_KEYS } from "@/constants/sortOptions";
+import {
+  TODO_FILTER_KEYS,
+  TODO_SORT_VALUES,
+  TODO_ORDER_VALUES,
+} from "@/constants/todoFilter";
 import PRIORITY from "@/constants/todoPriority";
 
-export interface SortOptionValueType {
-  sort: (typeof SORT_KEYS)[keyof typeof SORT_KEYS];
-  order: (typeof ORDER_KEYS)[keyof typeof ORDER_KEYS];
+export type TodoFilterKeyType =
+  (typeof TODO_FILTER_KEYS)[keyof typeof TODO_FILTER_KEYS];
+
+export interface TodoSortOptionValueType {
+  sort: (typeof TODO_SORT_VALUES)[keyof typeof TODO_SORT_VALUES];
+  order: (typeof TODO_ORDER_VALUES)[keyof typeof TODO_ORDER_VALUES];
 }
 
-export interface PriorityOptionValueType {
-  priority: (typeof PRIORITY)[keyof typeof PRIORITY];
+export interface TodoPriorityOptionValueType {
+  priorityFilter: (typeof PRIORITY)[keyof typeof PRIORITY];
 }

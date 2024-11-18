@@ -3,22 +3,24 @@ import Input from "@/components/common/Input";
 import { priorityOptions, sortOptions } from "./TodoFilter.data";
 import styles from "./TodoFilter.module.css";
 import {
-  PriorityOptionValueType,
-  SortOptionValueType,
+  TodoPriorityOptionValueType,
+  TodoSortOptionValueType,
 } from "./TodoFilter.type";
 import { useSearchParams } from "react-router-dom";
 import updateSearchParams from "@/utils/updateSearchParams";
 import { useMemo } from "react";
 import { OptionType } from "@/components/common/Dropdown/Dropdown";
+import { TODO_FILTER_KEYS } from "@/constants/todoFilter";
 
 export default function TodoFilter() {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  /* 기존 선택된 초기 정렬 옵션 */
   const defaultSelectedSortOption = useMemo<
-    OptionType<SortOptionValueType> | undefined
+    OptionType<TodoSortOptionValueType> | undefined
   >(() => {
-    const sortValue = searchParams.get("sort");
-    const orderValue = searchParams.get("order");
+    const sortValue = searchParams.get(TODO_FILTER_KEYS.SORT);
+    const orderValue = searchParams.get(TODO_FILTER_KEYS.ORDER);
 
     if (sortValue && orderValue) {
       return (
@@ -28,36 +30,36 @@ export default function TodoFilter() {
         ) || undefined
       );
     }
-
     return undefined;
-  }, [searchParams]);
+  }, []);
 
+  /* 기존 선택된 초기 우선순위 옵션 */
   const defaultSelectedPriorityOption = useMemo<
-    OptionType<PriorityOptionValueType> | undefined
+    OptionType<TodoPriorityOptionValueType> | undefined
   >(() => {
-    const priorityValue = searchParams.get("priority");
+    const priorityValue = searchParams.get(TODO_FILTER_KEYS.PRIORITY_FILTER);
 
     if (priorityValue) {
       return (
         priorityOptions.find(
-          (option) => option.value.priority === priorityValue
+          (option) => option.value.priorityFilter === priorityValue
         ) || undefined
       );
     }
-
     return undefined;
-  }, [searchParams]);
+  }, []);
 
+  /* 기존 초기 키워드 */
   const defaultKeyword = useMemo(() => {
-    const keywordValue = searchParams.get("keyword");
+    const keywordValue = searchParams.get(TODO_FILTER_KEYS.KEYWORD);
     return keywordValue || undefined;
-  }, [searchParams]);
+  }, []);
 
   /* 정렬 드롭다운 선택 메서드 */
-  const onSelectSortDropdown = (value: SortOptionValueType | null) => {
+  const onSelectSortDropdown = (value: TodoSortOptionValueType | null) => {
     const updatedParams = updateSearchParams(
       value as Record<string, string> | null,
-      ["sort", "order"],
+      [TODO_FILTER_KEYS.SORT, TODO_FILTER_KEYS.ORDER],
       searchParams
     );
 
@@ -65,10 +67,12 @@ export default function TodoFilter() {
   };
 
   /* 우선순위 드롭다운 선택 메서드 */
-  const onSelectPriorityDropdown = (value: PriorityOptionValueType | null) => {
+  const onSelectPriorityDropdown = (
+    value: TodoPriorityOptionValueType | null
+  ) => {
     const updatedParams = updateSearchParams(
       value as Record<string, string> | null,
-      ["priority"],
+      [TODO_FILTER_KEYS.PRIORITY_FILTER],
       searchParams
     );
 
@@ -85,7 +89,7 @@ export default function TodoFilter() {
 
       const updatedParams = updateSearchParams(
         kewordParams,
-        ["keyword"],
+        [TODO_FILTER_KEYS.KEYWORD],
         searchParams
       );
 
