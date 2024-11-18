@@ -13,12 +13,18 @@ import {
   postCreateTodo,
   putUpdateTodo,
 } from "./todoApi";
+import parseQueryStringToObject from "@/utils/parseQueryStringToObject";
 
 /** todo 목록 */
 export const useGetTodos = () => {
   const isAuthenticated = useSelector(
     (state: RootStateType) => state.auth.isAuthenticated
   );
+  const [searchParams] = useSearchParams();
+  const queryStringObj = parseQueryStringToObject(searchParams.toString());
+
+  if (queryStringObj?.id) delete queryStringObj.id;
+
   const {
     data: todosData,
     refetch: refetchTodosData,
@@ -26,8 +32,11 @@ export const useGetTodos = () => {
     isLoading: isTodosFetchLoading,
     ...rest
   } = useQuery({
-    queryKey: [QUERY_KEY.TODO.GET_TODOS],
-    queryFn: () => getTodos(),
+    queryKey: [
+      QUERY_KEY.TODO.GET_TODOS,
+      searchParams && searchParams.toString(),
+    ],
+    queryFn: () => getTodos(queryStringObj),
     enabled: isAuthenticated,
     refetchOnMount: "always", // 무효화 시 refetch 실행
     select: (result) => {
